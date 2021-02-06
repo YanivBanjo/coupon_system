@@ -5,26 +5,24 @@ import java.util.List;
 public class Customer {
     private int id;
     private String firstName;
-    private String LastName;
+    private String lastName;
     private String email;
     private String password;
     private List<Coupon> coupons;
 
-    public Customer(String firstName, String lastName, String email, String password, List<Coupon> coupons) {
-        this.id = id;
+
+    public Customer(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
-        LastName = lastName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.coupons = coupons;
     }
-    public Customer(int id, String firstName, String lastName, String email, String password, List<Coupon> coupons) {
+    public Customer(int id, String firstName, String lastName, String email, String password) {
         this.id = id;
         this.firstName = firstName;
-        LastName = lastName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.coupons = coupons;
     }
 
     public int getId() {
@@ -44,11 +42,11 @@ public class Customer {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -80,7 +78,7 @@ public class Customer {
         return "Customer{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", LastName='" + LastName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", coupons=" + coupons +

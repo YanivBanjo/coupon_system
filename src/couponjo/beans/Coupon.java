@@ -16,7 +16,6 @@ public class Coupon {
 
 
     public Coupon(int companyId, Category category, String title, String description, Date start_date, Date end_date, int amount, double price, String image) {
-        this.id = id;
         this.companyId = companyId;
         this.category = category;
         this.title = title;

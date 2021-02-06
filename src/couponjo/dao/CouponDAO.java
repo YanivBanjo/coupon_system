@@ -1,0 +1,18 @@
+package couponjo.dao;
+
+import couponjo.beans.Coupon;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public interface CouponDAO {
+    void addCoupon(Coupon coupon) throws SQLException;
+
+    void updateCoupon(Coupon coupon) throws SQLException;
+
+    void deleteCoupon(Coupon coupon) throws SQLException;
+
+    Coupon getSingleCoupon(int id) throws SQLException;
+
+    List<Coupon> getAllCoupons() throws SQLException;
+}

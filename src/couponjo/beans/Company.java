@@ -9,19 +9,16 @@ public class Company {
     private String password;
     private List<Coupon> coupons;
 
-    public Company(String name, String email, String password, List<Coupon> coupons) {
-        this.id = id;
+    public Company(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.coupons = coupons;
     }
-    public Company(int id, String name, String email, String password, List<Coupon> coupons) {
+    public Company(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.coupons = coupons;
     }
 
     public int getId() {
