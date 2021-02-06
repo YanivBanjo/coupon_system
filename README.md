@@ -1,2 +1,2 @@
 # coupon_system
-JB Project
+JB Project Banjo
