@@ -12,10 +12,10 @@ import couponjo.utils.ASCIIArtGenerator;
 import java.sql.SQLException;
 
 public class Test {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws  SQLException {
 
 //        Class.forName("com.mysql.cj.jdbc.Driver");
-//        DBInit.createCouponjoSystem();
+        DBInit.createCouponjoSystem();
         ASCIIArtGenerator.print("COUPONJO");
         ASCIIArtGenerator.print("CompanyDAO");
         CompanyDAO companyDAO = new CompanyDBDAO();
