@@ -17,8 +17,32 @@ public class CustomerDBDAO implements CustomerDAO {
     private static final String DELETE_CUSTOMER = "DELETE FROM `couponjo`.`customers` WHERE (`id` = ?);";
     private static final String GET_ONE_CUSTOMER = "SELECT * FROM `couponjo`.`customers` WHERE (`id` = ?);";
     private static final String GET_ALL_CUSTOMER = "SELECT * FROM `couponjo`.`customers`";
+    private static final String IS_CUSTOMER_EXIST = "SELECT * FROM `couponjo`.`customers` WHERE (`email` = ?) and (`password` = ?)";
 
     private static Connection connection;
+
+    @Override
+    public boolean isCustomerExist(String email, String password) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(IS_CUSTOMER_EXIST);
+            statement.setString(1, email);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return false;    }
 
     @Override
     public void addCustomer(Customer customer) throws SQLException {

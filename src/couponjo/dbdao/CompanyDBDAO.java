@@ -14,11 +14,36 @@ import java.util.List;
 public class CompanyDBDAO implements CompanyDAO {
     private static final String ADD_COMPANY = "INSERT INTO `couponjo`.`companies` (`name`, `email`, `password`) VALUES (?, ?, ?)";
     private static final String UPDATE_COMPANY = "UPDATE `couponjo`.`companies` SET `name` = ?, `email` = ?, `password` = ? WHERE (`id` = ?)";
-    private static final String DELETE_COMPANY = "DELETE FROM `couponjo`.`companies` WHERE (`id` = ?);";
-    private static final String GET_ONE_COMPANY = "SELECT * FROM `couponjo`.`companies` WHERE (`id` = ?);";
+    private static final String DELETE_COMPANY = "DELETE FROM `couponjo`.`companies` WHERE (`id` = ?)";
+    private static final String GET_ONE_COMPANY = "SELECT * FROM `couponjo`.`companies` WHERE (`id` = ?)";
     private static final String GET_ALL_COMPANIES = "SELECT * FROM `couponjo`.`companies`";
+    private static final String IS_COMPANY_EXIST = "SELECT * FROM `couponjo`.`companies` WHERE (`email` = ?) and (`password` = ?)";
 
     private static Connection connection;
+
+    @Override
+    public boolean isCompanyExist(String email, String password) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(IS_COMPANY_EXIST);
+            statement.setString(1, email);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return false;
+    }
 
     @Override
     public void addCompany(Company company) throws SQLException {
