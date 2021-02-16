@@ -1,6 +1,7 @@
 package couponjo.dao;
 
 import couponjo.beans.Coupon;
+import couponjo.beans.CustomerCouponPurchase;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,4 +20,6 @@ public interface CouponDAO {
     void addCouponPurchase(int customerId,int couponId) throws SQLException;
 
     void deleteCouponPurchase(int customerId,int couponId) throws SQLException;
+
+    CustomerCouponPurchase getCouponPhurcaseByCustomerId(int customerId) throws SQLException;
 }

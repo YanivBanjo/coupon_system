@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class DBInit {
     //read from json file
-    //use DAO for add
     //image should be BLOB
 
     private static String[] companies = {"Coca_Cola","Tnuva","Strauss","IEC","IKEA","KFC","BanjoPizza","BanjoBurger","BanjoTours"};

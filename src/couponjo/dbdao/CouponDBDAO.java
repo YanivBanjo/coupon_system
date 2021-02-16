@@ -2,6 +2,7 @@ package couponjo.dbdao;
 
 import couponjo.beans.Category;
 import couponjo.beans.Coupon;
+import couponjo.beans.CustomerCouponPurchase;
 import couponjo.dao.CouponDAO;
 import couponjo.db.ConnectionPool;
 
@@ -20,6 +21,7 @@ public class CouponDBDAO implements CouponDAO {
     private static final String GET_ALL_COUPONS = "SELECT * FROM `couponjo`.`coupons`";
     private static final String ADD_COUPONS_PURCHASE = "INSERT INTO `couponjo`.`customers_coupons` (`customer_id`, `coupon_id`) VALUES (?, ?)";
     private static final String DELETE_COUPONS_PURCHASE = "DELETE FROM `couponjo`.`customers_coupons` WHERE (`customer_id` = ?) and (`coupon_id` = ?)";
+    private static final String GET_COUPONS_PURCHASE = "select * FROM `couponjo`.`customers_coupons` WHERE (`customer_id` = ?)";
 
     private static Connection connection;
 
@@ -184,5 +186,27 @@ public class CouponDBDAO implements CouponDAO {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
         }
+    }
+
+    @Override
+    public CustomerCouponPurchase getCouponPhurcaseByCustomerId(int customerId) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_COUPONS_PURCHASE);
+            statement.setInt(1, customerId);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return new CustomerCouponPurchase(resultSet.getInt(1),resultSet.getInt(2));
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;
     }
 }
