@@ -22,11 +22,11 @@ public class CustomerFacade extends ClientFacade {
 
     public void purchaseCoupon (int customerId, int couponId) throws SQLException, InvalidOperationException {
         //add logic
-        CustomerCouponPurchase customerPurchase = couponDAO.getCouponPhurcaseByCustomerId(customerId);
-        if (customerPurchase.getCouponId() == couponId){
-            throw new InvalidOperationException("Coupon can only be purchse once");
-        }
-        couponDAO.addCouponPurchase(customerId,couponId);
+//        CustomerCouponPurchase customerPurchase = couponDAO.getCouponPurcaseByCustomerId(customerId);
+//        if (customerPurchase.getCouponId() == couponId){
+//            throw new InvalidOperationException("Coupon can only be purchse once");
+//        }
+//        couponDAO.addCouponPurchase(customerId,couponId);
     }
 
 

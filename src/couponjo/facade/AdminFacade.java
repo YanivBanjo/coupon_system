@@ -1,49 +1,62 @@
 package couponjo.facade;
 
 import couponjo.beans.Company;
+import couponjo.beans.Coupon;
 import couponjo.beans.Customer;
-import couponjo.dao.CompanyDAO;
-import couponjo.dbdao.CompanyDBDAO;
-import couponjo.exceptions.InvalidOperationException;
 
+import couponjo.beans.CustomerCouponPurchase;
+import couponjo.exceptions.InvalidOperationException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class AdminFacade extends ClientFacade{
 
+    public AdminFacade() {
+    }
+
     @Override
     boolean login(String email, String password) {
-        return (email=="admin@admin.com" && password == "admin");
+        return (email.equals("admin@admin.com") && password.equals("admin"));
     }
 
     public void addCompany(Company company) throws SQLException, InvalidOperationException {
-        List<Company> companies = getAllCompanies();
-        for (Company c:companies){
-            if (c.getName().equals(company.getName()) || c.getEmail().equals(company.getEmail())){
-                throw new InvalidOperationException("Company can't be added, name/email is already taken");
-            }
+        Company byName = getCompanyByName(company.getName());
+        Company byEmail = getCompanyByEmail(company.getEmail());
+
+        if (byName == null && byEmail == null) {
+            companyDAO.addCompany(company);
+        } else {
+            throw new InvalidOperationException("Company can't be added, name/email is already exist");
         }
-        companyDAO.addCompany(company);
     }
 
-//    public void deleteCompany(Company company) throws SQLException, InvalidOperationException {
-//        if(company.getId() > 0){
-//            couponDAO.getCouponPhurcaseByCustomerId(company.getId());
-//        } else {
-//            throw new InvalidOperationException("In order to update company please provide company id");
-//        }
-//        companyDAO.deleteCompany(company);
-//    }
+    public void deleteCompany(Company company) throws SQLException, InvalidOperationException {
+        Company getCompany = getCompanyByName(company.getName());
+        if (getCompany == null) {
+            throw new InvalidOperationException("company doesn't exist");
+        }
+        List<Coupon> couponList = getAllCouponsByCompanyId(getCompany.getId());
+        couponList.forEach(System.out::println);
+        for (Coupon c:couponList){
+            deletePurchases(getCouponPurcaseByCouponId(c.getId()),c.getTitle());
+        }
+        deleteCoupons(couponList);
+
+        companyDAO.deleteCompany(company);
+        System.out.println("Company deleted");
+    }
 
     public void updateCompany(Company company) throws SQLException, InvalidOperationException {
-        if(company.getId() > 0){
-            Company toCompare = getSingleCompany(company.getId());
-            if(!toCompare.getName().equals(company.getName()) || !toCompare.getPassword().equals(company.getPassword())){
-                throw new InvalidOperationException("company name and password can be update by company user only");
+        Company toCompare = getCompanyByName(company.getName());
+            if (toCompare == null){
+                throw new InvalidOperationException("company doesn't exist");
             }
-        } else {
-            throw new InvalidOperationException("In order to update company please provide company id");
-        }
+            if(!toCompare.getName().equals(company.getName())){
+                throw new InvalidOperationException("company name can't be update");
+            }
+            if(toCompare.getId() != company.getId()){
+                throw new InvalidOperationException("company code can't be update");
+            }
         companyDAO.updateCompany(company);
     }
 
@@ -53,36 +66,80 @@ public class AdminFacade extends ClientFacade{
     public Company getSingleCompany(int id) throws SQLException {
         return companyDAO.getSingleCompany(id);
     }
-
+    public Company getCompanyByName(String name) throws SQLException {
+        return companyDAO.getCompanyByName(name);
+    }
+    public Company getCompanyByEmail(String email) throws SQLException {
+        return companyDAO.getCompanyByEmail(email);
+    }
 
     public void addCustomer(Customer customer) throws SQLException, InvalidOperationException {
-        List<Customer> customers = getAllCustomers();
-        for (Customer c:customers){
-            if (c.getEmail().equals(customer.getEmail())){
+        Customer byEmail = getCustomerByEmail(customer.getEmail());
+            if (byEmail == null) {
+                customerDAO.addCustomer(customer);
+            } else {
                 throw new InvalidOperationException("Customer can't be added, email is already taken");
             }
-        }
-        customerDAO.addCustomer(customer);
     }
     public void updateCustomer(Customer customer) throws SQLException, InvalidOperationException {
-        if(customer.getId() > 0){
-            Customer toCompare = getSingleCustomer(customer.getId());
-            if(!toCompare.getPassword().equals(customer.getPassword())){
-                throw new InvalidOperationException("Customer password can be update by customer user only");
+        Customer customerByEmail = getCustomerByEmail(customer.getEmail());
+        if (customerByEmail != null) {
+            if (customer.getId() == customerByEmail.getId()){
+                customerDAO.updateCustomer(customer);
+            } else {
+                throw new InvalidOperationException("Customer code can't be update");
             }
         } else {
-            throw new InvalidOperationException("In order to update company please provide company id");
+            throw new InvalidOperationException("Customer "+customer.getEmail()+" dosen't exist");
         }
-        customerDAO.updateCustomer(customer);
     }
 
-//    public void deleteCustomer (){
-//
-//    }
+    public void deleteCustomer (){
+
+    }
+
     public List<Customer> getAllCustomers() throws SQLException {
         return customerDAO.getAllCustomer();
     }
     public Customer getSingleCustomer(int id) throws SQLException {
         return customerDAO.getSingleCustomer(id);
+    }
+    public Customer getCustomerByEmail(String email) throws SQLException {
+        return customerDAO.getCustomerByEmail(email);
+    }
+    public List<Coupon> getAllCouponsByCompanyId(int id) throws SQLException {
+        return couponDAO.getAllCouponsByCompanyId(id);
+    }
+    public List<CustomerCouponPurchase> getCouponPurcaseByCouponId(int id) throws SQLException {
+        return couponDAO.getAllCouponPurcaseByCouponId(id);
+    }
+    private void deletePurchases (List <CustomerCouponPurchase>purchaseList,String name){
+        if(purchaseList.size() > 0) {
+            System.out.println("Going to delete customer purchase for  Coupon "+ name );
+            purchaseList.forEach(purchase -> {
+                try {
+                    couponDAO.deleteCouponPurchase(purchase.getCustomerId(), purchase.getCouponId());
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+        } else {
+            System.out.println("For Coupon named "+ name +" ,No purchase found to delete");
+        }
+    }
+
+    private void deleteCoupons(List<Coupon> couponList){
+        if(couponList.size() > 0){
+            couponList.forEach(coupon -> {
+                try {
+                    System.out.println("Deleting Company Coupon "+ coupon.getTitle());
+                    couponDAO.deleteCoupon(coupon);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+        } else {
+            System.out.println("No coupons found to delete");
+        }
     }
 }

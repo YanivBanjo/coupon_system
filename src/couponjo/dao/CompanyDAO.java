@@ -16,5 +16,9 @@ public interface CompanyDAO {
 
     Company getSingleCompany(int id) throws SQLException;
 
+    Company getCompanyByName(String name) throws SQLException;
+
+    Company getCompanyByEmail(String email) throws SQLException;
+
     List<Company> getAllCompanies() throws SQLException;
 }

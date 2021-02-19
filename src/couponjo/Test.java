@@ -22,6 +22,12 @@ public class Test {
     public static void main(String[] args) throws SQLException {
 
 //        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         DBInit.createCouponjoSystem();
         ASCIIArtGenerator.print("COUPONJO");
         ASCIIArtGenerator.print("CompanyDAO");

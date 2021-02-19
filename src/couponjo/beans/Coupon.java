@@ -1,5 +1,6 @@
 package couponjo.beans;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Coupon {
@@ -27,16 +28,8 @@ public class Coupon {
         this.image = image;
     }
     public Coupon(int id, int companyId, Category category, String title, String description, Date start_date, Date end_date, int amount, double price, String image) {
+        this(companyId,category,title,description,start_date,end_date,amount,price,image);
         this.id = id;
-        this.companyId = companyId;
-        this.category = category;
-        this.title = title;
-        this.description = description;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.amount = amount;
-        this.price = price;
-        this.image = image;
     }
 
     public int getId() {
@@ -133,5 +126,10 @@ public class Coupon {
                 ", price=" + price +
                 ", image='" + image + '\'' +
                 '}';
+    }
+
+    public static Coupon createCoupon(int companyid){
+        return new Coupon(companyid,Category.ELECTRICITY,"TestTitle"+(int)(Math.random()*40+1),"testDescription", java.sql.Date.valueOf(LocalDate.now().plusDays(2)),
+                java.sql.Date.valueOf(LocalDate.now().plusDays(2)),30,45.7,"none");
     }
 }

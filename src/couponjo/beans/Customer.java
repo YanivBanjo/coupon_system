@@ -1,5 +1,7 @@
 package couponjo.beans;
 
+import couponjo.utils.PasswordUtils;
+
 import java.util.List;
 
 public class Customer {
@@ -18,11 +20,8 @@ public class Customer {
         this.password = password;
     }
     public Customer(int id, String firstName, String lastName, String email, String password) {
+        this(firstName, lastName, email, password);
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
     }
 
     public int getId() {
@@ -83,5 +82,9 @@ public class Customer {
                 ", password='" + password + '\'' +
                 ", coupons=" + coupons +
                 '}';
+    }
+
+    public static Customer createCustomer(String name ,String family){
+        return new Customer(name,family,name+"."+family+"@gmail.com", PasswordUtils.generate(10));
     }
 }

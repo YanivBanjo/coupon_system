@@ -17,9 +17,13 @@ public interface CouponDAO {
 
     List<Coupon> getAllCoupons() throws SQLException;
 
+    List<Coupon> getAllCouponsByCompanyId(int id) throws SQLException;
+
     void addCouponPurchase(int customerId,int couponId) throws SQLException;
 
     void deleteCouponPurchase(int customerId,int couponId) throws SQLException;
 
-    CustomerCouponPurchase getCouponPhurcaseByCustomerId(int customerId) throws SQLException;
+    List<CustomerCouponPurchase> getAllCouponPurcaseByCustomerId(int customerId) throws SQLException;
+
+    List<CustomerCouponPurchase> getAllCouponPurcaseByCouponId(int customerId) throws SQLException;
 }

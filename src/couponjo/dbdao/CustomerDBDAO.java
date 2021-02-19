@@ -14,10 +14,11 @@ import java.util.List;
 public class CustomerDBDAO implements CustomerDAO {
     private static final String ADD_CUSTOMER = "INSERT INTO `couponjo`.`customers` (`first_name`, `last_name`, `email`, `password`) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_CUSTOMER = "UPDATE `couponjo`.`customers` SET `first_name` = ?, `last_name` = ?, `email` = ?, `password` = ? WHERE (`id` = ?)";
-    private static final String DELETE_CUSTOMER = "DELETE FROM `couponjo`.`customers` WHERE (`id` = ?);";
-    private static final String GET_ONE_CUSTOMER = "SELECT * FROM `couponjo`.`customers` WHERE (`id` = ?);";
+    private static final String DELETE_CUSTOMER = "DELETE FROM `couponjo`.`customers` WHERE (`id` = ?)";
+    private static final String GET_ONE_CUSTOMER = "SELECT * FROM `couponjo`.`customers` WHERE (`id` = ?)";
     private static final String GET_ALL_CUSTOMER = "SELECT * FROM `couponjo`.`customers`";
     private static final String IS_CUSTOMER_EXIST = "SELECT * FROM `couponjo`.`customers` WHERE (`email` = ?) and (`password` = ?)";
+    private static final String GET_CUSTOMER_BY_EMAIL = "SELECT * FROM `couponjo`.`customers` WHERE (`email` = ?)";
 
     private static Connection connection;
 
@@ -118,17 +119,41 @@ public class CustomerDBDAO implements CustomerDAO {
             PreparedStatement statement = connection.prepareStatement(GET_ONE_CUSTOMER);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return new Customer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                    resultSet.getString(4),resultSet.getString(5));
-
+            if(resultSet.next()){
+                return new Customer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4),resultSet.getString(5));
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
         }
-        return null;    }
+        return null;
+    }
+
+    @Override
+    public Customer getCustomerByEmail(String email) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_CUSTOMER_BY_EMAIL);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                return new Customer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4),resultSet.getString(5));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;
+    }
 
     @Override
     public List<Customer> getAllCustomer() throws SQLException {

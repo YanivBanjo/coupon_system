@@ -18,6 +18,8 @@ public class CompanyDBDAO implements CompanyDAO {
     private static final String GET_ONE_COMPANY = "SELECT * FROM `couponjo`.`companies` WHERE (`id` = ?)";
     private static final String GET_ALL_COMPANIES = "SELECT * FROM `couponjo`.`companies`";
     private static final String IS_COMPANY_EXIST = "SELECT * FROM `couponjo`.`companies` WHERE (`email` = ?) and (`password` = ?)";
+    private static final String GET_COMPANY_BY_NAME = "SELECT * FROM `couponjo`.`companies` WHERE (`name` = ?)";
+    private static final String GET_COMPANY_BY_EMAIL = "SELECT * FROM `couponjo`.`companies` WHERE (`email` = ?)";
 
     private static Connection connection;
 
@@ -129,6 +131,51 @@ public class CompanyDBDAO implements CompanyDAO {
         }
         return null;
     }
+
+    @Override
+    public Company getCompanyByName(String name) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_COMPANY_BY_NAME);
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;
+    }
+
+    @Override
+    public Company getCompanyByEmail(String email) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_COMPANY_BY_EMAIL);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;    }
 
     @Override
     public List<Company> getAllCompanies() throws SQLException {

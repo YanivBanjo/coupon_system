@@ -48,9 +48,9 @@ public class DBInit {
         DBManager.dropSchema();
         DBManager.createSchema();
         DBManager.createTables();
-        DBInit.createCompanies();
+//        DBInit.createCompanies();
         DBInit.createCategories();
-        DBInit.createCustomers();
-        DBInit.createCoupons();
+//        DBInit.createCustomers();
+//        DBInit.createCoupons();
     }
 }
