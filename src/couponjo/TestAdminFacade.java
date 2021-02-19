@@ -5,15 +5,17 @@ import couponjo.beans.Company;
 import couponjo.beans.Coupon;
 import couponjo.beans.Customer;
 import couponjo.dao.CouponDAO;
+import couponjo.dao.CustomerDAO;
 import couponjo.db.DBInit;
 import couponjo.dbdao.CouponDBDAO;
+import couponjo.dbdao.CustomerDBDAO;
 import couponjo.exceptions.InvalidOperationException;
 import couponjo.facade.AdminFacade;
 import couponjo.facade.LoginManager;
 
 import java.sql.SQLException;
 
-public class TestAdminFacad {
+public class TestAdminFacade {
     public static void main(String[] args) throws SQLException {
         DBInit.createCouponjoSystem();
 
@@ -22,6 +24,7 @@ public class TestAdminFacad {
 
         AdminFacade adminFacade = (AdminFacade) loginManager.login("admin@admin.com","admin", ClientType.ADMINISTRATOR);
 
+        //COMPANY
         Company company1 = Company.createCompany("cocaCola");
         Company company2 = Company.createCompany("Spring");
         Company company3 = Company.createCompany("IKEA");
@@ -41,9 +44,22 @@ public class TestAdminFacad {
         System.out.println("***********************************************************");
 
         try {
+            System.out.println("update company "+company1.getName()+" password");
+            System.out.println("BEFORE: " +adminFacade.getSingleCompany(1));
+            company1.setPassword("Aa123456");
+            adminFacade.updateCompany(company1);
+            System.out.println("AFTER: " +adminFacade.getSingleCompany(1));
+        } catch (InvalidOperationException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("***********************************************************");
+
+        try {
             System.out.println("update company "+company1.getName()+" name to Pepsi");
             company1.setName("Pepsi");
+            System.out.println("BEFORE: " +company1);
             adminFacade.updateCompany(company1);
+            System.out.println("AFTER: " +adminFacade.getSingleCompany(1));
         } catch (InvalidOperationException e) {
             System.out.println(e.getMessage());
         }
@@ -52,8 +68,10 @@ public class TestAdminFacad {
         try {
             company1.setName("cocaCola");
             company1.setId(999);
-            System.out.println("update company "+company1.getName()+" code");
+            System.out.println("update company "+company1.getName()+" code to 999");
             adminFacade.updateCompany(company1);
+            System.out.println("AFTER: " +adminFacade.getSingleCompany(1));
+
         } catch (InvalidOperationException e) {
             System.out.println(e.getMessage());
         }
@@ -67,6 +85,36 @@ public class TestAdminFacad {
         System.out.println(adminFacade.getSingleCompany(1));
         System.out.println("***********************************************************");
 
+        System.out.println("Going to delete company with no coupons");
+        try {
+            adminFacade.deleteCompany(company2);
+        } catch (InvalidOperationException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("***********************************************************");
+
+        System.out.println("Going to delete company with coupons and purchase");
+        try {
+            CustomerDAO customer = new CustomerDBDAO();
+            Customer customer1 = Customer.createCustomer("Leni","Banjo");
+            Customer customer2 = Customer.createCustomer("Ela","Banjo");
+            customer.addCustomer(customer1);
+            customer.addCustomer(customer2);
+            Coupon coupon1 = Coupon.createCoupon(3);
+            Coupon coupon2 = Coupon.createCoupon(1);
+            Coupon coupon3 = Coupon.createCoupon(3);
+            CouponDAO couponDAO = new CouponDBDAO();
+            couponDAO.addCoupon(coupon1);
+            couponDAO.addCoupon(coupon2);
+            couponDAO.addCoupon(coupon3);
+            couponDAO.addCouponPurchase(1,1);
+            adminFacade.deleteCompany(company3);
+        } catch (InvalidOperationException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("***********************************************************");
+
+        // CUSTOMER
         Customer customer1 = Customer.createCustomer("Yaniv","Banjo");
         Customer customer2 = Customer.createCustomer("Shmuel","Banjo");
         Customer customer3 = Customer.createCustomer("Avia","Banjo");
@@ -93,6 +141,33 @@ public class TestAdminFacad {
         }
         System.out.println("***********************************************************");
 
+        try {
+            System.out.println("Going to delete customer2 witout purchases");
+            adminFacade.deleteCustomer(customer2);
+        } catch (InvalidOperationException e) {
+            e.printStackTrace();
+        }
+        System.out.println("***********************************************************");
+
+        try {
+            System.out.println("Going to delete customer3 with purchases");
+            CouponDAO couponDAO = new CouponDBDAO();
+            Coupon coupon1 = Coupon.createCoupon(1);
+            Coupon coupon2 = Coupon.createCoupon(1);
+            Coupon coupon3 = Coupon.createCoupon(1);
+            couponDAO.addCoupon(coupon1);
+            couponDAO.addCoupon(coupon2);
+            couponDAO.addCoupon(coupon3);
+            couponDAO.addCouponPurchase(5,4);
+            couponDAO.addCouponPurchase(5,5);
+            couponDAO.addCouponPurchase(3,6);
+            couponDAO.addCouponPurchase(5,6);
+            adminFacade.deleteCustomer(customer3);
+        } catch (InvalidOperationException e) {
+            e.printStackTrace();
+        }
+        System.out.println("***********************************************************");
+
         System.out.println("Get all customers");
         adminFacade.getAllCustomers().forEach(System.out::println);
         System.out.println("***********************************************************");
@@ -100,31 +175,6 @@ public class TestAdminFacad {
         System.out.println("Get single customer");
         System.out.println(adminFacade.getSingleCustomer(1));
         System.out.println("***********************************************************");
-
-        System.out.println("Going to delete company with no coupons");
-        try {
-            adminFacade.deleteCompany(company2);
-        } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("***********************************************************");
-
-        System.out.println("Going to delete company with coupons and purchase");
-        try {
-            Customer.createCustomer("Leni","Banjo");
-            Customer.createCustomer("Ela","Banjo");
-            Coupon coupon1 = Coupon.createCoupon(3);
-            Coupon coupon2 = Coupon.createCoupon(1);
-            Coupon coupon3 = Coupon.createCoupon(3);
-            CouponDAO couponDAO = new CouponDBDAO();
-            couponDAO.addCoupon(coupon1);
-            couponDAO.addCoupon(coupon2);
-            couponDAO.addCoupon(coupon3);
-            couponDAO.addCouponPurchase(1,1);
-            adminFacade.deleteCompany(company3);
-        } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
-        }
 
     }
 }
