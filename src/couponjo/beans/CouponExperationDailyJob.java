@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CouponExperationDailyJob implements Runnable {
-    private boolean quit = true;
+    private boolean quit;
     private CouponDAO couponDAO = new CouponDBDAO();
 
     public CouponExperationDailyJob() {
@@ -19,10 +19,10 @@ public class CouponExperationDailyJob implements Runnable {
 
     @Override
     public void run() {
-        while (quit) {
+        while (!quit) {
             try {
-                Thread.sleep(10000);
-                Print.thread("DAILY JOB RUN: verify old coupons not in the system ");
+                Print.thread("DAILY JOB RUN, verify old coupons not in the system");
+                Thread.sleep(5000);
                 List<Coupon> couponList = couponDAO.getAllCoupons();
                 if (couponList != null) {
                     for (Coupon c : couponList) {
@@ -44,7 +44,10 @@ public class CouponExperationDailyJob implements Runnable {
                 Print.exception(e.getMessage());
             }
         }
-
+    }
+    public void stop(boolean quit){
+        Print.thread("DAILY JOB STOPPED");
+        this.quit = quit;
     }
 
 }
