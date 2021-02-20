@@ -3,7 +3,7 @@ package couponjo.utils;
 public class Print {
 
     public static void sepereation() {
-        System.out.println(ConsoleColors.GREEN_BOLD + "********************************************************************************" +
+        System.out.println(ConsoleColors.CYAN_BOLD + "********************************************************************************" +
                 "**********************************************************************************************************************" + ConsoleColors.RESET);
     }
 

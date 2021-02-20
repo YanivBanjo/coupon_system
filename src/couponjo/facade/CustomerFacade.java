@@ -38,7 +38,7 @@ public class CustomerFacade extends ClientFacade {
         if (coupon.getEnd_date().getTime() - new Date().getTime() < 0) {
             throw new InvalidOperationException("Coupon is no longer valid");
         }
-        ;
+
         if (coupon.getAmount() == 0) {
             throw new InvalidOperationException("Sorry no more coupons left");
         }
