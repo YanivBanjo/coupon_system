@@ -1,26 +1,18 @@
 package couponjo.facade;
 
-import couponjo.beans.Coupon;
-import couponjo.beans.Customer;
-import couponjo.beans.CustomerCouponPurchase;
-import couponjo.dao.CouponDAO;
-import couponjo.dao.CustomerDAO;
-import couponjo.dbdao.CouponDBDAO;
-import couponjo.dbdao.CustomerDBDAO;
 import couponjo.exceptions.InvalidOperationException;
 
 import java.sql.SQLException;
 
 public class CustomerFacade extends ClientFacade {
-    private CustomerDAO customerDAO = new CustomerDBDAO();
-    private CouponDAO couponDAO = new CouponDBDAO();
+    private int customerId;
 
     @Override
     boolean login(String email, String password) throws SQLException {
-        return  customerDAO.isCustomerExist(email, password);
+        return customerDAO.isCustomerExist(email, password);
     }
 
-    public void purchaseCoupon (int customerId, int couponId) throws SQLException, InvalidOperationException {
+    public void purchaseCoupon(int customerId, int couponId) throws SQLException, InvalidOperationException {
         //add logic
 //        CustomerCouponPurchase customerPurchase = couponDAO.getCouponPurcaseByCustomerId(customerId);
 //        if (customerPurchase.getCouponId() == couponId){

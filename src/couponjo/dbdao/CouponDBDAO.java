@@ -24,6 +24,9 @@ public class CouponDBDAO implements CouponDAO {
     private static final String GET_COUPONS_PURCHASE_BY_CUSTOMER_ID = "select * FROM `couponjo`.`customers_coupons` WHERE (`customer_id` = ?)";
     private static final String GET_COUPONS_PURCHASE_BY_COUPON_ID = "select * FROM `couponjo`.`customers_coupons` WHERE (`coupon_id` = ?)";
     private static final String GET_COUPONS_BY_COMPANY_ID = "select * FROM `couponjo`.`coupons` WHERE (`company_id` = ?)";
+    private static final String GET_COUPONS_BY_CATEGORY_COMPANY_ID = "select * FROM `couponjo`.`coupons` WHERE (`company_id` = ?) and (`category_id` = ?)";
+    private static final String GET_COUPONS_PRICE_LOWER_THEN = "select * FROM `couponjo`.`coupons` WHERE (`company_id` = ?) and (`price` < ?)";
+    private static final String GET_COUPON_BY_TITLE = "select * FROM `couponjo`.`coupons` WHERE (`title` = ?)";
 
     private static Connection connection;
 
@@ -111,11 +114,37 @@ public class CouponDBDAO implements CouponDAO {
             PreparedStatement statement = connection.prepareStatement(GET_ONE_COUPON);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return new Coupon(resultSet.getInt(1),resultSet.getInt(2), Category.values()[resultSet.getInt(3)-1],
-                    resultSet.getString(4),resultSet.getString(5), resultSet.getDate(6) , resultSet.getDate(7),
-                    resultSet.getInt(8), resultSet.getDouble(9) , resultSet.getString(10));
+            if (resultSet.next()) {
+                return new Coupon(resultSet.getInt(1), resultSet.getInt(2), Category.values()[resultSet.getInt(3) - 1],
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6), resultSet.getDate(7),
+                        resultSet.getInt(8), resultSet.getDouble(9), resultSet.getString(10));
+            }
+            ;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;
+    }
 
+    @Override
+    public Coupon getCouponByTitle(String title) throws SQLException {
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_COUPON_BY_TITLE);
+            statement.setString(1, title);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Coupon(resultSet.getInt(1), resultSet.getInt(2), Category.values()[resultSet.getInt(3) - 1],
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6), resultSet.getDate(7),
+                        resultSet.getInt(8), resultSet.getDouble(9), resultSet.getString(10));
+            }
+            ;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
@@ -135,10 +164,10 @@ public class CouponDBDAO implements CouponDAO {
             // STEP 3 - Run SQL Statement
             PreparedStatement statement = connection.prepareStatement(GET_ALL_COUPONS);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-               coupons.add(new Coupon(resultSet.getInt(1),resultSet.getInt(2), Category.values()[resultSet.getInt(3)-1],
-                        resultSet.getString(4),resultSet.getString(5), resultSet.getDate(6) , resultSet.getDate(7),
-                        resultSet.getInt(8), resultSet.getDouble(9) , resultSet.getString(10)));
+            while (resultSet.next()) {
+                coupons.add(new Coupon(resultSet.getInt(1), resultSet.getInt(2), Category.values()[resultSet.getInt(3) - 1],
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6), resultSet.getDate(7),
+                        resultSet.getInt(8), resultSet.getDouble(9), resultSet.getString(10)));
             }
             return coupons;
         } catch (Exception e) {
@@ -161,10 +190,10 @@ public class CouponDBDAO implements CouponDAO {
             PreparedStatement statement = connection.prepareStatement(GET_COUPONS_BY_COMPANY_ID);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-                coupons.add(new Coupon(resultSet.getInt(1),resultSet.getInt(2), Category.values()[resultSet.getInt(3)-1],
-                        resultSet.getString(4),resultSet.getString(5), resultSet.getDate(6) , resultSet.getDate(7),
-                        resultSet.getInt(8), resultSet.getDouble(9) , resultSet.getString(10)));
+            while (resultSet.next()) {
+                coupons.add(new Coupon(resultSet.getInt(1), resultSet.getInt(2), Category.values()[resultSet.getInt(3) - 1],
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6), resultSet.getDate(7),
+                        resultSet.getInt(8), resultSet.getDouble(9), resultSet.getString(10)));
             }
             return coupons;
         } catch (Exception e) {
@@ -173,7 +202,62 @@ public class CouponDBDAO implements CouponDAO {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
         }
-        return null;    }
+        return null;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsWithPriceLowerThen(int companyId, int price) throws SQLException {
+        List<Coupon> coupons = new ArrayList<>();
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_COUPONS_PRICE_LOWER_THEN);
+            statement.setInt(1, companyId);
+            statement.setInt(2, price);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                coupons.add(new Coupon(resultSet.getInt(1), resultSet.getInt(2), Category.values()[resultSet.getInt(3) - 1],
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6), resultSet.getDate(7),
+                        resultSet.getInt(8), resultSet.getDouble(9), resultSet.getString(10)));
+            }
+            return coupons;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsByCategoryAndCompanyId(int companyId, int categoryId) throws SQLException {
+        List<Coupon> coupons = new ArrayList<>();
+        try {
+            // STEP 2 - open connection to DB
+            connection = ConnectionPool.getInstance().getConnection();
+
+            // STEP 3 - Run SQL Statement
+            PreparedStatement statement = connection.prepareStatement(GET_COUPONS_BY_CATEGORY_COMPANY_ID);
+            statement.setInt(1, companyId);
+            statement.setInt(2, categoryId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                coupons.add(new Coupon(resultSet.getInt(1), resultSet.getInt(2), Category.values()[resultSet.getInt(3) - 1],
+                        resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6), resultSet.getDate(7),
+                        resultSet.getInt(8), resultSet.getDouble(9), resultSet.getString(10)));
+            }
+            return coupons;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // STEP 5 - close connection
+            ConnectionPool.getInstance().returnConnection(connection);
+        }
+        return null;
+    }
 
     @Override
     public void addCouponPurchase(int customerId, int couponId) throws SQLException {
@@ -226,8 +310,8 @@ public class CouponDBDAO implements CouponDAO {
             PreparedStatement statement = connection.prepareStatement(GET_COUPONS_PURCHASE_BY_CUSTOMER_ID);
             statement.setInt(1, customerId);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-                purchaseList.add(new CustomerCouponPurchase(resultSet.getInt(1),resultSet.getInt(2)));
+            while (resultSet.next()) {
+                purchaseList.add(new CustomerCouponPurchase(resultSet.getInt(1), resultSet.getInt(2)));
             }
             return purchaseList;
         } catch (Exception e) {
@@ -240,7 +324,7 @@ public class CouponDBDAO implements CouponDAO {
     }
 
     @Override
-    public List<CustomerCouponPurchase> getAllCouponPurcaseByCouponId(int couponId) throws SQLException {
+    public List<CustomerCouponPurchase> getAllCouponPurchaseByCouponId(int couponId) throws SQLException {
         List<CustomerCouponPurchase> purchaseList = new ArrayList<>();
         try {
             // STEP 2 - open connection to DB
@@ -250,8 +334,8 @@ public class CouponDBDAO implements CouponDAO {
             PreparedStatement statement = connection.prepareStatement(GET_COUPONS_PURCHASE_BY_COUPON_ID);
             statement.setInt(1, couponId);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-                purchaseList.add(new CustomerCouponPurchase(resultSet.getInt(1),resultSet.getInt(2)));
+            while (resultSet.next()) {
+                purchaseList.add(new CustomerCouponPurchase(resultSet.getInt(1), resultSet.getInt(2)));
             }
             return purchaseList;
         } catch (Exception e) {
@@ -260,5 +344,6 @@ public class CouponDBDAO implements CouponDAO {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
         }
-        return null;    }
+        return null;
+    }
 }

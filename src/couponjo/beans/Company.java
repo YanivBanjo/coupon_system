@@ -18,6 +18,7 @@ public class Company {
         this.password = password;
         coupons = new ArrayList<>();
     }
+
     public Company(int id, String name, String email, String password) {
         this(name, email, password);
         this.id = id;
@@ -74,7 +75,7 @@ public class Company {
                 '}';
     }
 
-    public static Company createCompany(String name){
-        return new Company(name,name+"@gmail.co.il", PasswordUtils.generate(10));
+    public static Company createCompany(String name) {
+        return new Company(name, name + "@gmail.co.il", PasswordUtils.generate(10));
     }
 }

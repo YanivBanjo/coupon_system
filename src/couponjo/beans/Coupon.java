@@ -27,8 +27,9 @@ public class Coupon {
         this.price = price;
         this.image = image;
     }
+
     public Coupon(int id, int companyId, Category category, String title, String description, Date start_date, Date end_date, int amount, double price, String image) {
-        this(companyId,category,title,description,start_date,end_date,amount,price,image);
+        this(companyId, category, title, description, start_date, end_date, amount, price, image);
         this.id = id;
     }
 
@@ -128,8 +129,8 @@ public class Coupon {
                 '}';
     }
 
-    public static Coupon createCoupon(int companyid){
-        return new Coupon(companyid,Category.ELECTRICITY,"TestTitle"+(int)(Math.random()*40+1),"testDescription", java.sql.Date.valueOf(LocalDate.now().plusDays(2)),
-                java.sql.Date.valueOf(LocalDate.now().plusDays(2)),30,45.7,"none");
+    public static Coupon createCoupon(int companyid) {
+        return new Coupon(companyid, Category.ELECTRICITY, "TestTitle" + (int) (Math.random() * 40 + 1), "testDescription", java.sql.Date.valueOf(LocalDate.now().plusDays(2)),
+                java.sql.Date.valueOf(LocalDate.now().plusDays(2)), (int) (Math.random() * 40 + 1), (Math.random() * 40 + 1), "none");
     }
 }

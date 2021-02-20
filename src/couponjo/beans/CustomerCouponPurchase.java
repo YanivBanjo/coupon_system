@@ -4,10 +4,6 @@ public class CustomerCouponPurchase {
     private int customerId;
     private int couponId;
 
-    public CustomerCouponPurchase(){
-
-    }
-
     public CustomerCouponPurchase(int customerId, int couponId) {
         this.customerId = customerId;
         this.couponId = couponId;

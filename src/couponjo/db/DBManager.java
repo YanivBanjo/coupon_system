@@ -26,12 +26,12 @@ public class DBManager {
             "  `password` VARCHAR(45) NOT NULL,\n" +
             "   PRIMARY KEY (`id`))";
 
-    private static final String CREATE_TABLE_CATEGORIES =  "CREATE TABLE `couponjo`.`categories` (\n" +
+    private static final String CREATE_TABLE_CATEGORIES = "CREATE TABLE `couponjo`.`categories` (\n" +
             "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
             "  `name` VARCHAR(45) NOT NULL,\n" +
             "   PRIMARY KEY (`id`));";
 
-    private static final String CREATE_TABLE_COUPONS =  "CREATE TABLE `couponjo`.`coupons` (\n" +
+    private static final String CREATE_TABLE_COUPONS = "CREATE TABLE `couponjo`.`coupons` (\n" +
             "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
             "  `company_id` INT NOT NULL,\n" +
             "  `category_id` INT NOT NULL,\n" +
@@ -56,7 +56,7 @@ public class DBManager {
             "   ON DELETE NO ACTION\n" +
             "   ON UPDATE NO ACTION);";
 
-    private static final String CREATE_TABLE_CUSTOMERS_COUPONS =  "CREATE TABLE `couponjo`.`customers_coupons` (\n" +
+    private static final String CREATE_TABLE_CUSTOMERS_COUPONS = "CREATE TABLE `couponjo`.`customers_coupons` (\n" +
             "   `customer_id` INT NOT NULL,\n" +
             "   `coupon_id` INT NOT NULL,\n" +
             "    PRIMARY KEY (`customer_id`, `coupon_id`),\n" +

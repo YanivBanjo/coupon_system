@@ -34,7 +34,7 @@ public class Test {
         CompanyDAO companyDAO = new CompanyDBDAO();
 
         System.out.println("*******************  add company Electro ************************");
-        Company c1 = new Company("Electro","electro@gmail.com", PasswordUtils.generate(10));
+        Company c1 = new Company("Electro", "electro@gmail.com", PasswordUtils.generate(10));
         companyDAO.addCompany(c1);
         System.out.println(companyDAO.getSingleCompany(10));
 
@@ -47,21 +47,20 @@ public class Test {
         System.out.println(companyDAO.getSingleCompany(10));
 
         System.out.println("*******************  is company ElectroBanjo exist ************************");
-        System.out.println(companyDAO.isCompanyExist("ElectroBanjo@gmail.com","greatPassword1!"));
+        System.out.println(companyDAO.isCompanyExist("ElectroBanjo@gmail.com", "greatPassword1!"));
 
         System.out.println("*******************  delete company ElectroBanjo ************************");
         companyDAO.deleteCompany(companyDAO.getSingleCompany(10));
         companyDAO.getAllCompanies().forEach(System.out::println);
 
         System.out.println("*******************  is company ElectroBanjo exist ************************");
-        System.out.println(companyDAO.isCompanyExist("ElectroBanjo@gmail.com","greatPassword1!"));
-
+        System.out.println(companyDAO.isCompanyExist("ElectroBanjo@gmail.com", "greatPassword1!"));
 
 
         ASCIIArtGenerator.print("CustomerDAO");
         CustomerDAO customerDAO = new CustomerDBDAO();
         System.out.println("*******************  add customer Avner ************************");
-        Customer customer1 = new Customer("Avner","Katz","Avner.katz@gmail.com", PasswordUtils.generate(10));
+        Customer customer1 = new Customer("Avner", "Katz", "Avner.katz@gmail.com", PasswordUtils.generate(10));
         customerDAO.addCustomer(customer1);
         System.out.println(customerDAO.getSingleCustomer(7));
 
@@ -74,14 +73,14 @@ public class Test {
         System.out.println(customerDAO.getSingleCustomer(7));
 
         System.out.println("*******************  is customer Moshe exist ************************");
-        System.out.println(customerDAO.isCustomerExist("Moshe.katz@gmail.com","greatPassword1!"));
+        System.out.println(customerDAO.isCustomerExist("Moshe.katz@gmail.com", "greatPassword1!"));
 
         System.out.println("*******************  delete customer Moshe ************************");
         customerDAO.deleteCustomer(customerDAO.getSingleCustomer(7));
         customerDAO.getAllCustomer().forEach(System.out::println);
 
         System.out.println("*******************  is customer Moshe exist ************************");
-        System.out.println(customerDAO.isCustomerExist("Moshe.katz@gmail.com","greatPassword1!"));
+        System.out.println(customerDAO.isCustomerExist("Moshe.katz@gmail.com", "greatPassword1!"));
 
 
         ASCIIArtGenerator.print("CouponDAO");
@@ -89,8 +88,8 @@ public class Test {
 
 
         System.out.println("*******************  add coupon ************************");
-        Coupon coupon1 = new Coupon(9, Category.VACATION,"Super Clasico","don't miss it",
-                Date.valueOf(LocalDate.now().plusDays(2)),Date.valueOf(LocalDate.now().plusDays(2)),7,8.5,"imagin");
+        Coupon coupon1 = new Coupon(9, Category.VACATION, "Super Clasico", "don't miss it",
+                Date.valueOf(LocalDate.now().plusDays(2)), Date.valueOf(LocalDate.now().plusDays(2)), 7, 8.5, "imagin");
         couponDAO.addCoupon(coupon1);
         System.out.println(couponDAO.getSingleCoupon(10));
 
@@ -105,14 +104,14 @@ public class Test {
         couponDAO.deleteCoupon(couponDAO.getSingleCoupon(10));
         couponDAO.getAllCoupons().forEach(System.out::println);
 
-        couponDAO.addCouponPurchase(1,1);
-        couponDAO.addCouponPurchase(2,2);
-        couponDAO.addCouponPurchase(5,4);
-        couponDAO.addCouponPurchase(3,2);
-        couponDAO.addCouponPurchase(1,4);
+        couponDAO.addCouponPurchase(1, 1);
+        couponDAO.addCouponPurchase(2, 2);
+        couponDAO.addCouponPurchase(5, 4);
+        couponDAO.addCouponPurchase(3, 2);
+        couponDAO.addCouponPurchase(1, 4);
 
-        couponDAO.deleteCouponPurchase(1,1);
-        couponDAO.deleteCouponPurchase(1,4);
+        couponDAO.deleteCouponPurchase(1, 1);
+        couponDAO.deleteCouponPurchase(1, 4);
 
     }
 }

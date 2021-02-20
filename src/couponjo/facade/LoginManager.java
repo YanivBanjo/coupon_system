@@ -4,7 +4,7 @@ import couponjo.beans.ClientType;
 
 import java.sql.SQLException;
 
-public class LoginManager{
+public class LoginManager {
     private static LoginManager instance = null;
 
     private LoginManager() {
@@ -26,13 +26,13 @@ public class LoginManager{
         switch (clientType) {
             case ADMINISTRATOR:
                 cf = new AdminFacade();
-                return (cf.login(email,password) == true) ? cf : null;
+                return (cf.login(email, password) == true) ? cf : null;
             case COMPANY:
                 cf = new CompanyFacade();
-                return (cf.login(email,password) == true) ? cf : null;
+                return (cf.login(email, password) == true) ? cf : null;
             case CUSTOMER:
                 cf = new CustomerFacade();
-                return (cf.login(email,password) == true) ? cf : null;
+                return (cf.login(email, password) == true) ? cf : null;
         }
         return null;
     }

@@ -19,6 +19,7 @@ public class Customer {
         this.email = email;
         this.password = password;
     }
+
     public Customer(int id, String firstName, String lastName, String email, String password) {
         this(firstName, lastName, email, password);
         this.id = id;
@@ -84,7 +85,7 @@ public class Customer {
                 '}';
     }
 
-    public static Customer createCustomer(String name ,String family){
-        return new Customer(name,family,name+"."+family+"@gmail.com", PasswordUtils.generate(10));
+    public static Customer createCustomer(String name, String family) {
+        return new Customer(name, family, name + "." + family + "@gmail.com", PasswordUtils.generate(10));
     }
 }

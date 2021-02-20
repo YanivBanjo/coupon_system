@@ -15,15 +15,21 @@ public interface CouponDAO {
 
     Coupon getSingleCoupon(int id) throws SQLException;
 
+    Coupon getCouponByTitle(String title) throws SQLException;
+
     List<Coupon> getAllCoupons() throws SQLException;
 
     List<Coupon> getAllCouponsByCompanyId(int id) throws SQLException;
 
-    void addCouponPurchase(int customerId,int couponId) throws SQLException;
+    List<Coupon> getAllCouponsWithPriceLowerThen(int companyId, int price) throws SQLException;
 
-    void deleteCouponPurchase(int customerId,int couponId) throws SQLException;
+    List<Coupon> getAllCouponsByCategoryAndCompanyId(int companyId, int categoryId) throws SQLException;
+
+    void addCouponPurchase(int customerId, int couponId) throws SQLException;
+
+    void deleteCouponPurchase(int customerId, int couponId) throws SQLException;
 
     List<CustomerCouponPurchase> getAllCouponPurcaseByCustomerId(int customerId) throws SQLException;
 
-    List<CustomerCouponPurchase> getAllCouponPurcaseByCouponId(int customerId) throws SQLException;
+    List<CustomerCouponPurchase> getAllCouponPurchaseByCouponId(int customerId) throws SQLException;
 }

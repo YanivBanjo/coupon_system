@@ -175,7 +175,8 @@ public class CompanyDBDAO implements CompanyDAO {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
         }
-        return null;    }
+        return null;
+    }
 
     @Override
     public List<Company> getAllCompanies() throws SQLException {
@@ -187,7 +188,7 @@ public class CompanyDBDAO implements CompanyDAO {
             // STEP 3 - Run SQL Statement
             PreparedStatement statement = connection.prepareStatement(GET_ALL_COMPANIES);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 companies.add(new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
                         resultSet.getString(4)));
             }

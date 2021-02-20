@@ -6,10 +6,11 @@ import couponjo.beans.Customer;
 
 import couponjo.beans.CustomerCouponPurchase;
 import couponjo.exceptions.InvalidOperationException;
+
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminFacade extends ClientFacade{
+public class AdminFacade extends ClientFacade {
 
     public AdminFacade() {
     }
@@ -22,7 +23,6 @@ public class AdminFacade extends ClientFacade{
     public void addCompany(Company company) throws SQLException, InvalidOperationException {
         Company byName = getCompanyByName(company.getName());
         Company byEmail = getCompanyByEmail(company.getEmail());
-
         if (byName == null && byEmail == null) {
             companyDAO.addCompany(company);
         } else {
@@ -37,8 +37,8 @@ public class AdminFacade extends ClientFacade{
         }
         List<Coupon> couponList = getAllCouponsByCompanyId(toDelete.getId());
         couponList.forEach(System.out::println);
-        for (Coupon c:couponList){
-            deletePurchases(getCouponPurcaseByCouponId(c.getId()),c.getTitle());
+        for (Coupon c : couponList) {
+            deletePurchases(getCouponPurchaseByCouponId(c.getId()), c.getTitle());
         }
         deleteCoupons(couponList);
 
@@ -48,10 +48,10 @@ public class AdminFacade extends ClientFacade{
 
     public void updateCompany(Company company) throws SQLException, InvalidOperationException {
         Company toCompare = getCompanyByName(company.getName());
-        if (toCompare == null){
+        if (toCompare == null) {
             throw new InvalidOperationException("company doesn't exist");
         }
-        if(!toCompare.getName().equals(company.getName())){
+        if (!toCompare.getName().equals(company.getName())) {
             throw new InvalidOperationException("company name can't be update");
         }
         company.setId(toCompare.getId());
@@ -59,71 +59,81 @@ public class AdminFacade extends ClientFacade{
     }
 
     public List<Company> getAllCompanies() throws SQLException {
-            return companyDAO.getAllCompanies();
+        return companyDAO.getAllCompanies();
     }
+
     public Company getSingleCompany(int id) throws SQLException {
         return companyDAO.getSingleCompany(id);
     }
+
     public Company getCompanyByName(String name) throws SQLException {
         return companyDAO.getCompanyByName(name);
     }
+
     public Company getCompanyByEmail(String email) throws SQLException {
         return companyDAO.getCompanyByEmail(email);
     }
 
     public void addCustomer(Customer customer) throws SQLException, InvalidOperationException {
         Customer byEmail = getCustomerByEmail(customer.getEmail());
-            if (byEmail == null) {
-                customerDAO.addCustomer(customer);
-            } else {
-                throw new InvalidOperationException("Customer can't be added, email is already taken");
-            }
+        if (byEmail == null) {
+            customerDAO.addCustomer(customer);
+        } else {
+            throw new InvalidOperationException("Customer can't be added, email is already taken");
+        }
     }
+
     public void updateCustomer(Customer customer) throws SQLException, InvalidOperationException {
         Customer customerByEmail = getCustomerByEmail(customer.getEmail());
         if (customerByEmail != null) {
-            if (customer.getId() == customerByEmail.getId()){
+            if (customer.getId() == customerByEmail.getId()) {
                 customerDAO.updateCustomer(customer);
             } else {
                 throw new InvalidOperationException("Customer code can't be update");
             }
         } else {
-            throw new InvalidOperationException("Customer "+customer.getEmail()+" dosen't exist");
+            throw new InvalidOperationException("Customer " + customer.getEmail() + " dosen't exist");
         }
     }
 
-    public void deleteCustomer (Customer customer) throws SQLException, InvalidOperationException {
+    public void deleteCustomer(Customer customer) throws SQLException, InvalidOperationException {
         Customer customerByEmail = getCustomerByEmail(customer.getEmail());
         if (customerByEmail != null) {
-            List<CustomerCouponPurchase> customerCouponPurchaseList = getCouponPurcaseByCustomerId(customerByEmail.getId());
-            deletePurchases(customerCouponPurchaseList,customerByEmail.getEmail());
+            List<CustomerCouponPurchase> customerCouponPurchaseList = getCouponPurchaseByCustomerId(customerByEmail.getId());
+            deletePurchases(customerCouponPurchaseList, customerByEmail.getEmail());
             customerDAO.deleteCustomer(customerByEmail);
         } else {
-            throw new InvalidOperationException("Customer "+customer.getEmail()+" dosen't exist");
+            throw new InvalidOperationException("Customer " + customer.getEmail() + " dosen't exist");
         }
     }
 
     public List<Customer> getAllCustomers() throws SQLException {
         return customerDAO.getAllCustomer();
     }
+
     public Customer getSingleCustomer(int id) throws SQLException {
         return customerDAO.getSingleCustomer(id);
     }
-    public Customer getCustomerByEmail(String email) throws SQLException {
+
+    private Customer getCustomerByEmail(String email) throws SQLException {
         return customerDAO.getCustomerByEmail(email);
     }
-    public List<Coupon> getAllCouponsByCompanyId(int id) throws SQLException {
+
+    private List<Coupon> getAllCouponsByCompanyId(int id) throws SQLException {
         return couponDAO.getAllCouponsByCompanyId(id);
     }
-    public List<CustomerCouponPurchase> getCouponPurcaseByCouponId(int id) throws SQLException {
-        return couponDAO.getAllCouponPurcaseByCouponId(id);
+
+    private List<CustomerCouponPurchase> getCouponPurchaseByCouponId(int id) throws SQLException {
+        return couponDAO.getAllCouponPurchaseByCouponId(id);
     }
-    public List<CustomerCouponPurchase> getCouponPurcaseByCustomerId(int id) throws SQLException {
+
+    private List<CustomerCouponPurchase> getCouponPurchaseByCustomerId(int id) throws SQLException {
         return couponDAO.getAllCouponPurcaseByCustomerId(id);
     }
-    private void deletePurchases (List <CustomerCouponPurchase>purchaseList,String name){
-        if(purchaseList.size() > 0) {
-            System.out.println("Going to delete customer purchase for "+ name );
+
+    private void deletePurchases(List<CustomerCouponPurchase> purchaseList, String name) {
+        if (purchaseList.size() > 0) {
+            System.out.println("Going to delete customer purchases for " + name);
             purchaseList.forEach(purchase -> {
                 try {
                     couponDAO.deleteCouponPurchase(purchase.getCustomerId(), purchase.getCouponId());
@@ -132,15 +142,15 @@ public class AdminFacade extends ClientFacade{
                 }
             });
         } else {
-            System.out.println("For Coupon named "+ name +" ,No purchase found to delete");
+            System.out.println("For Coupon named " + name + " ,No purchases found to delete");
         }
     }
 
-    private void deleteCoupons(List<Coupon> couponList){
-        if(couponList.size() > 0){
+    private void deleteCoupons(List<Coupon> couponList) {
+        if (couponList.size() > 0) {
             couponList.forEach(coupon -> {
                 try {
-                    System.out.println("Deleting Company Coupon "+ coupon.getTitle());
+                    System.out.println("Deleting Company Coupon " + coupon.getTitle());
                     couponDAO.deleteCoupon(coupon);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
