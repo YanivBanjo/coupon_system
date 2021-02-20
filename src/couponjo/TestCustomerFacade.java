@@ -94,6 +94,7 @@ public class TestCustomerFacade {
 
         System.out.println("Get Customer Details");
         System.out.println(customerFacade.getCustomerDetails());
+        Print.sepereation();
 
 
 

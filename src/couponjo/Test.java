@@ -1,6 +1,7 @@
 package couponjo;
 
 import couponjo.beans.CouponExperationDailyJob;
+import couponjo.dao.CouponDAO;
 
 import java.sql.SQLException;
 
@@ -18,6 +19,6 @@ public class Test {
         TestCompanyFacade.run();
         TestCustomerFacade.run();
 
-        
+
     }
 }

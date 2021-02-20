@@ -1,16 +1,16 @@
 package couponjo.beans;
 
 import couponjo.dao.CouponDAO;
-import couponjo.exceptions.InvalidOperationException;
+import couponjo.dbdao.CouponDBDAO;
 import couponjo.utils.Print;
 
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-public class CouponExperationDailyJob implements Runnable{
-    private boolean quit;
-    private CouponDAO couponDAO;
+public class CouponExperationDailyJob implements Runnable {
+    private boolean quit = true;
+    private CouponDAO couponDAO = new CouponDBDAO();
 
     public CouponExperationDailyJob() {
 
@@ -19,27 +19,32 @@ public class CouponExperationDailyJob implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("Thread start");
-        try {
-            List<Coupon> couponList = couponDAO.getAllCoupons();
-            if(couponList != null){
-                for(Coupon c:couponList){
-                    if (c.getEnd_date().getTime() - new Date().getTime() < 0) {
-                        System.out.println("Coupon is no longer valid going to delete coupon and is purchase history");
-                        couponDAO.deleteCoupon(c);
-                        List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurchaseByCouponId(c.getId());
-                        if (customerCouponPurchaseList != null){
-                            for (CustomerCouponPurchase p:customerCouponPurchaseList){
-                                couponDAO.deleteCouponPurchase(p.getCustomerId(),p.getCouponId());
+        while (quit) {
+            try {
+                Thread.sleep(10000);
+                Print.thread("DAILY JOB RUN: verify old coupons not in the system ");
+                List<Coupon> couponList = couponDAO.getAllCoupons();
+                if (couponList != null) {
+                    for (Coupon c : couponList) {
+                        if (c.getEnd_date().getTime() - new Date().getTime() < 0) {
+                            Print.thread("Coupon is no longer valid going to delete coupon and is purchase history");
+                            Print.thread(c.toString());
+                            List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurchaseByCouponId(c.getId());
+                            if (customerCouponPurchaseList != null) {
+                                for (CustomerCouponPurchase p : customerCouponPurchaseList) {
+                                    couponDAO.deleteCouponPurchase(p.getCustomerId(), p.getCouponId());
+                                }
                             }
+                            couponDAO.deleteCoupon(c);
                         }
                     }
                 }
-            }
 
-        } catch (SQLException e) {
-            Print.exception(e.getMessage());
+            } catch (SQLException | InterruptedException e) {
+                Print.exception(e.getMessage());
+            }
         }
+
     }
 
 }

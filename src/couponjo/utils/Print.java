@@ -11,4 +11,8 @@ public class Print {
         System.out.println(ConsoleColors.RED+ errorMsg + ConsoleColors.RESET);
     }
 
+    public static void thread(String msg) {
+        System.out.println(ConsoleColors.YELLOW+ msg + ConsoleColors.RESET);
+    }
+
 }
