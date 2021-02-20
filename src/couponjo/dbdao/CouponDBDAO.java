@@ -39,7 +39,7 @@ public class CouponDBDAO implements CouponDAO {
             // STEP 3 - Run SQL Statement
             PreparedStatement statement = connection.prepareStatement(ADD_COUPON);
             statement.setInt(1, coupon.getCompanyId());
-            statement.setInt(2, coupon.getCategory().ordinal());
+            statement.setInt(2, coupon.getCategory().ordinal()+1);
             statement.setString(3, coupon.getTitle());
             statement.setString(4, coupon.getDescription());
             statement.setDate(5, (java.sql.Date) coupon.getStart_date());
@@ -66,7 +66,7 @@ public class CouponDBDAO implements CouponDAO {
             // STEP 3 - Run SQL Statement
             PreparedStatement statement = connection.prepareStatement(UPDATE_COUPON);
             statement.setInt(1, coupon.getCompanyId());
-            statement.setInt(2, coupon.getCategory().ordinal());
+            statement.setInt(2, coupon.getCategory().ordinal()+1);
             statement.setString(3, coupon.getTitle());
             statement.setString(4, coupon.getDescription());
             statement.setDate(5, (java.sql.Date) coupon.getStart_date());

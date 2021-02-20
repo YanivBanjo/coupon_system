@@ -42,7 +42,6 @@ public class CompanyFacade extends ClientFacade {
         } else {
             throw new InvalidOperationException("Coupon doesn't exist and can't be update");
         }
-        coupon.setCategory(Category.ELECTRICITY);////need to fix
         couponDAO.updateCoupon(coupon);
     }
 

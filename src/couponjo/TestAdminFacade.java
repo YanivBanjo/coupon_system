@@ -127,6 +127,7 @@ public class TestAdminFacade {
         Customer customer1 = Customer.createCustomer("Yaniv", "Banjo");
         Customer customer2 = Customer.createCustomer("Shmuel", "Banjo");
         Customer customer3 = Customer.createCustomer("Avia", "Banjo");
+        customer1.setPassword("Aa123456");
         try {
             adminFacade.addCustomer(customer1);
             System.out.println("Add new customer " + customer1.getFirstName() + " Succeeded");
