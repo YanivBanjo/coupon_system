@@ -3,6 +3,7 @@ package couponjo.dbdao;
 import couponjo.beans.Company;
 import couponjo.dao.CompanyDAO;
 import couponjo.db.ConnectionPool;
+import couponjo.utils.Print;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,7 +40,8 @@ public class CompanyDBDAO implements CompanyDAO {
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -61,7 +63,8 @@ public class CompanyDBDAO implements CompanyDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -83,7 +86,8 @@ public class CompanyDBDAO implements CompanyDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -102,7 +106,8 @@ public class CompanyDBDAO implements CompanyDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -124,7 +129,8 @@ public class CompanyDBDAO implements CompanyDAO {
                     resultSet.getString(4));
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -147,7 +153,8 @@ public class CompanyDBDAO implements CompanyDAO {
                         resultSet.getString(4));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -170,7 +177,8 @@ public class CompanyDBDAO implements CompanyDAO {
                         resultSet.getString(4));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -195,7 +203,8 @@ public class CompanyDBDAO implements CompanyDAO {
             return companies;
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);

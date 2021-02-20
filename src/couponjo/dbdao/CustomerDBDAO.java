@@ -3,6 +3,7 @@ package couponjo.dbdao;
 import couponjo.beans.Customer;
 import couponjo.dao.CustomerDAO;
 import couponjo.db.ConnectionPool;
+import couponjo.utils.Print;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +39,8 @@ public class CustomerDBDAO implements CustomerDAO {
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -60,7 +62,8 @@ public class CustomerDBDAO implements CustomerDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -83,7 +86,8 @@ public class CustomerDBDAO implements CustomerDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -102,7 +106,8 @@ public class CustomerDBDAO implements CustomerDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -124,7 +129,8 @@ public class CustomerDBDAO implements CustomerDAO {
                         resultSet.getString(4),resultSet.getString(5));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -147,7 +153,8 @@ public class CustomerDBDAO implements CustomerDAO {
                         resultSet.getString(4),resultSet.getString(5));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -172,7 +179,8 @@ public class CustomerDBDAO implements CustomerDAO {
             return customers;
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);

@@ -9,17 +9,21 @@ import couponjo.exceptions.InvalidOperationException;
 import couponjo.facade.CompanyFacade;
 import couponjo.facade.CustomerFacade;
 import couponjo.facade.LoginManager;
+import couponjo.utils.ASCIIArtGenerator;
+import couponjo.utils.Print;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class TestCustomerFacade {
-    public static void main(String[] args) throws SQLException {
+    public static void run() throws SQLException {
+        ASCIIArtGenerator.print("Customer Facade");
 
         LoginManager loginManager = LoginManager.getInstance();
         System.out.println(loginManager.login("Yaniv.Banjo@gmail.com", "Aa123456", ClientType.CUSTOMER));
 
         CustomerFacade customerFacade = (CustomerFacade) loginManager.login("Yaniv.Banjo@gmail.com", "Aa123456", ClientType.CUSTOMER);
+        Print.sepereation();
 
         //CUSTOMER
         System.out.println("purchase coupon by customer for the first time");
@@ -29,17 +33,19 @@ public class TestCustomerFacade {
             customerFacade.purchaseCoupon(8);
             System.out.println(customerFacade.getSingleCoupon(8));
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("purchase coupon by customer for the second time");
         try {
             customerFacade.purchaseCoupon(8);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("purchase coupon no amount ");
         Coupon coupon = Coupon.createCoupon(4);
@@ -50,9 +56,10 @@ public class TestCustomerFacade {
             System.out.println(customerFacade.getSingleCoupon(9));
             customerFacade.purchaseCoupon(9);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
 
         System.out.println("purchase old coupon ");
@@ -64,25 +71,26 @@ public class TestCustomerFacade {
             System.out.println(customerFacade.getSingleCoupon(10));
             customerFacade.purchaseCoupon(10);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get all Coupons purchse by customer login");
         customerFacade.getAllCouponsPurchaseByCustomer().forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get all Coupons purchse by customer with category Food");
         customerFacade.getAllCouponsPurchaseByCategory(Category.FOOD).forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get all Coupons purchse by customer with category Electricity");
         customerFacade.getAllCouponsPurchaseByCategory(Category.ELECTRICITY).forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get all Coupons purchse by customer with lower price then 20");
         customerFacade.getAllCouponsPurchaseByPriceLowerThen(20).forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get Customer Details");
         System.out.println(customerFacade.getCustomerDetails());

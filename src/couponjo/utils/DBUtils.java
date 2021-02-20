@@ -16,7 +16,8 @@ public class DBUtils {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - return Connection to connection pool
             ConnectionPool.getInstance().returnConnection(connection);

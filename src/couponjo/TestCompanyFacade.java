@@ -8,21 +8,25 @@ import couponjo.exceptions.InvalidOperationException;
 import couponjo.facade.AdminFacade;
 import couponjo.facade.CompanyFacade;
 import couponjo.facade.LoginManager;
+import couponjo.utils.ASCIIArtGenerator;
+import couponjo.utils.Print;
 
 import java.sql.SQLException;
 
 public class TestCompanyFacade {
-    public static void main(String[] args) throws SQLException {
+    public static void run() throws SQLException {
+        ASCIIArtGenerator.print("Company Facade");
 
         LoginManager loginManager = LoginManager.getInstance();
         System.out.println(loginManager.login("Burger@gmail.co.il", "Aa123456", ClientType.COMPANY));
 
         CompanyFacade companyFacade = (CompanyFacade) loginManager.login("Burger@gmail.co.il", "Aa123456", ClientType.COMPANY);
+        Print.sepereation();
 
         //COMPANY
         System.out.println("Get Company coupons");
         companyFacade.getAllCouponsByCompanyId().forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         try {
             System.out.println("add coupon with the same title");
@@ -32,9 +36,10 @@ public class TestCompanyFacade {
             System.out.println("Going to add coupon: " + newCoupon);
             companyFacade.addCoupon(newCoupon);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         try {
             System.out.println("add coupon with the same title of other company");
@@ -48,9 +53,10 @@ public class TestCompanyFacade {
             companyFacade.addCoupon(newCoupon1);
             companyFacade.addCoupon(newCoupon2);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         try {
             System.out.println("update coupon with different companyid");
@@ -59,9 +65,10 @@ public class TestCompanyFacade {
             System.out.println("Going to add coupon: " + coupon);
             companyFacade.updateCoupon(coupon);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         try {
             System.out.println("update coupon with different id");
@@ -72,9 +79,10 @@ public class TestCompanyFacade {
             System.out.println("get coupon 4: " + companyFacade.getSingleCoupon(5));
             System.out.println("get coupon 999: " + companyFacade.getSingleCoupon(999));
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         try {
 
@@ -82,21 +90,22 @@ public class TestCompanyFacade {
             System.out.println("going to delete coupon: " + coupon);
             companyFacade.deleteCoupon(coupon);
         } catch (InvalidOperationException e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         }
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get Company coupons");
         companyFacade.getAllCouponsByCompanyId().forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get coupons by category");
         companyFacade.getAllCouponsByCategoryAndCompanyId(1).forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
         System.out.println("Get coupons by price lower then 25");
         companyFacade.getAllCouponsWithPriceLowerThen(25).forEach(System.out::println);
-        System.out.println("***********************************************************");
+        Print.sepereation();
 
     }
 }

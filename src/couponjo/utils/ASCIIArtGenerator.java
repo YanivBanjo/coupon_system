@@ -78,7 +78,7 @@ public class ASCIIArtGenerator {
                 sb.append(image.getRGB(x, y) == Color.WHITE.getRGB() ? artSymbol : " ");
             if (sb.toString().trim().isEmpty())
                 continue;
-            System.out.println(sb);
+            System.out.println("\u001B[34m"+sb+"\033[0m");
         }
     }
 

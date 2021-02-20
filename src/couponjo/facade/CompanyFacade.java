@@ -5,6 +5,7 @@ import couponjo.beans.Company;
 import couponjo.beans.Coupon;
 import couponjo.beans.CustomerCouponPurchase;
 import couponjo.exceptions.InvalidOperationException;
+import couponjo.utils.Print;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -91,7 +92,8 @@ public class CompanyFacade extends ClientFacade {
                 try {
                     couponDAO.deleteCouponPurchase(purchase.getCustomerId(), purchase.getCouponId());
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    Print.exception(e.getMessage());
+
                 }
             });
         } else {

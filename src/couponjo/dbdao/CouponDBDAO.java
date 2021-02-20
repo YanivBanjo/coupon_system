@@ -5,6 +5,7 @@ import couponjo.beans.Coupon;
 import couponjo.beans.CustomerCouponPurchase;
 import couponjo.dao.CouponDAO;
 import couponjo.db.ConnectionPool;
+import couponjo.utils.Print;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,7 +51,8 @@ public class CouponDBDAO implements CouponDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -78,7 +80,8 @@ public class CouponDBDAO implements CouponDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -97,7 +100,8 @@ public class CouponDBDAO implements CouponDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -121,7 +125,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             ;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -146,7 +151,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             ;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -171,7 +177,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             return coupons;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -197,7 +204,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             return coupons;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -224,7 +232,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             return coupons;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -251,7 +260,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             return coupons;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -272,7 +282,8 @@ public class CouponDBDAO implements CouponDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -292,7 +303,8 @@ public class CouponDBDAO implements CouponDAO {
             statement.execute();
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -315,7 +327,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             return purchaseList;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
@@ -339,7 +352,8 @@ public class CouponDBDAO implements CouponDAO {
             }
             return purchaseList;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Print.exception(e.getMessage());
+
         } finally {
             // STEP 5 - close connection
             ConnectionPool.getInstance().returnConnection(connection);
