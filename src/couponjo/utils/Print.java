@@ -1,5 +1,9 @@
 package couponjo.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Print {
 
     public static void sepereation() {
@@ -13,6 +17,11 @@ public class Print {
 
     public static void thread(String msg) {
         System.out.println(ConsoleColors.YELLOW+ msg + ConsoleColors.RESET);
+    }
+
+    public static String formatDate(Date date){
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+        return dt.format(date);
     }
 
 }

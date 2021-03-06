@@ -23,4 +23,38 @@ public class DBUtils {
             ConnectionPool.getInstance().returnConnection(connection);
         }
     }
+
+//    public static void runQuery(String sql,...var args) throws SQLException {
+//        Connection connection = null;
+//        try {
+//            // STEP 2 - taking Connection from connection pool
+//            connection = ConnectionPool.getInstance().getConnection();
+//            // STEP 3 - Run your SQL instruction
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//            statement.executeUpdate();
+//        } catch (Exception e) {
+//            Print.exception(e.getMessage());
+//
+//        } finally {
+//            // STEP 5 - return Connection to connection pool
+//            ConnectionPool.getInstance().returnConnection(connection);
+//        }
+//    }
+//
+//    public static void resultset (String sql,...var args) throws SQLException {
+//        Connection connection = null;
+//        try {
+//            // STEP 2 - taking Connection from connection pool
+//            connection = ConnectionPool.getInstance().getConnection();
+//            // STEP 3 - Run your SQL instruction
+//            PreparedStatement statement = connection.prepareStatement(sql);
+//            statement.executeUpdate();
+//        } catch (Exception e) {
+//            Print.exception(e.getMessage());
+//
+//        } finally {
+//            // STEP 5 - return Connection to connection pool
+//            ConnectionPool.getInstance().returnConnection(connection);
+//        }
+//    }
 }

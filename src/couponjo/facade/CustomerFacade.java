@@ -4,11 +4,10 @@ import couponjo.beans.Category;
 import couponjo.beans.Coupon;
 import couponjo.beans.Customer;
 import couponjo.beans.CustomerCouponPurchase;
-import couponjo.dao.CouponDAO;
+import couponjo.exceptions.CouponOperationException;
 import couponjo.exceptions.InvalidOperationException;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,30 +25,30 @@ public class CustomerFacade extends ClientFacade {
         return customerDAO.isCustomerExist(email, password);
     }
 
-    public void purchaseCoupon(int couponId) throws SQLException, InvalidOperationException {
+    public void purchaseCoupon(int couponId) throws SQLException, CouponOperationException {
         List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurcaseByCustomerId(customerId);
         for (CustomerCouponPurchase p : customerCouponPurchaseList) {
             if (couponId == p.getCouponId()) {
-                throw new InvalidOperationException("Coupon was previously purchase");
+                throw new CouponOperationException("Coupon was previously purchase");
             }
         }
         couponDAO.addCouponPurchase(customerId, couponId);
         Coupon coupon = couponDAO.getSingleCoupon(couponId);
         if (coupon.getEnd_date().getTime() - new Date().getTime() < 0) {
-            throw new InvalidOperationException("Coupon is no longer valid");
+            throw new CouponOperationException("Coupon is no longer valid");
         }
 
         if (coupon.getAmount() == 0) {
-            throw new InvalidOperationException("Sorry no more coupons left");
+            throw new CouponOperationException("Sorry no more coupons left");
         }
         coupon.setAmount(coupon.getAmount() - 1);
         couponDAO.updateCoupon(coupon);
     }
 
-    public Coupon getSingleCoupon(int couponId) throws SQLException, InvalidOperationException {
+    public Coupon getSingleCoupon(int couponId) throws SQLException, CouponOperationException {
         Coupon coupon = couponDAO.getSingleCoupon(couponId);
         if (coupon == null) {
-            throw new InvalidOperationException("No such Coupon exist");
+            throw new CouponOperationException("No such Coupon exist");
         }
         return coupon;
     }

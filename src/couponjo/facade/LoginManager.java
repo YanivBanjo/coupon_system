@@ -1,6 +1,7 @@
 package couponjo.facade;
 
 import couponjo.beans.ClientType;
+import couponjo.exceptions.LoginOperationException;
 
 import java.sql.SQLException;
 
@@ -21,19 +22,28 @@ public class LoginManager {
         return instance;
     }
 
-    public ClientFacade login(String email, String password, ClientType clientType) throws SQLException {
+    public ClientFacade login(String email, String password, ClientType clientType) throws SQLException, LoginOperationException {
         ClientFacade cf;
         switch (clientType) {
             case ADMINISTRATOR:
                 cf = new AdminFacade();
-                return (cf.login(email, password) == true) ? cf : null;
+                if (cf.login(email, password)) {
+                    return cf;
+                }
+                throw new LoginOperationException("Email or Password are incorrect");
             case COMPANY:
                 cf = new CompanyFacade();
-                return (cf.login(email, password) == true) ? cf : null;
+                if (cf.login(email, password)) {
+                    return cf;
+                }
+                throw new LoginOperationException("Email or Password are incorrect");
             case CUSTOMER:
                 cf = new CustomerFacade();
-                return (cf.login(email, password) == true) ? cf : null;
+                if (cf.login(email, password)) {
+                    return cf;
+                }
+                throw new LoginOperationException("Email or Password are incorrect");
         }
-        return null;
+        throw new LoginOperationException("Incorrect client type");
     }
 }

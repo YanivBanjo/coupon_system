@@ -37,7 +37,7 @@ public class AdminFacade extends ClientFacade {
             throw new InvalidOperationException("company doesn't exist");
         }
         List<Coupon> couponList = getAllCouponsByCompanyId(toDelete.getId());
-        couponList.forEach(System.out::println);
+        Coupon.printCoupons(couponList);
         for (Coupon c : couponList) {
             deletePurchases(getCouponPurchaseByCouponId(c.getId()), c.getTitle());
         }

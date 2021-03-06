@@ -15,5 +15,4 @@ public abstract class ClientFacade {
     protected CouponDAO couponDAO = new CouponDBDAO();
 
     abstract boolean login(String email, String password) throws SQLException;
-
 }

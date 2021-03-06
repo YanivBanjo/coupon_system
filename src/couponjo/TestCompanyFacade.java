@@ -5,6 +5,7 @@ import couponjo.dao.CouponDAO;
 import couponjo.db.DBInit;
 import couponjo.dbdao.CouponDBDAO;
 import couponjo.exceptions.InvalidOperationException;
+import couponjo.exceptions.LoginOperationException;
 import couponjo.facade.AdminFacade;
 import couponjo.facade.CompanyFacade;
 import couponjo.facade.LoginManager;
@@ -14,7 +15,7 @@ import couponjo.utils.Print;
 import java.sql.SQLException;
 
 public class TestCompanyFacade {
-    public static void run() throws SQLException {
+    public static void run() throws SQLException, LoginOperationException {
         ASCIIArtGenerator.print("Company Facade");
 
         LoginManager loginManager = LoginManager.getInstance();
@@ -25,7 +26,7 @@ public class TestCompanyFacade {
 
         //COMPANY
         System.out.println("Get Company coupons");
-        companyFacade.getAllCouponsByCompanyId().forEach(System.out::println);
+        Coupon.printCoupons(companyFacade.getAllCouponsByCompanyId());
         Print.sepereation();
 
         try {
@@ -76,8 +77,10 @@ public class TestCompanyFacade {
             coupon.setId(999);
             System.out.println("Going to update coupon from id 4 to 999: " + coupon);
             companyFacade.updateCoupon(coupon);
-            System.out.println("get coupon 4: " + companyFacade.getSingleCoupon(5));
-            System.out.println("get coupon 999: " + companyFacade.getSingleCoupon(999));
+            System.out.println("get coupon 4");
+            Coupon.printCoupon(companyFacade.getSingleCoupon(5));
+            System.out.println("get coupon 999");
+            System.out.println(companyFacade.getSingleCoupon(999));
         } catch (InvalidOperationException e) {
             Print.exception(e.getMessage());
 
@@ -96,15 +99,15 @@ public class TestCompanyFacade {
         Print.sepereation();
 
         System.out.println("Get Company coupons");
-        companyFacade.getAllCouponsByCompanyId().forEach(System.out::println);
+        Coupon.printCoupons(companyFacade.getAllCouponsByCompanyId());
         Print.sepereation();
 
         System.out.println("Get coupons by category");
-        companyFacade.getAllCouponsByCategoryAndCompanyId(1).forEach(System.out::println);
+        Coupon.printCoupons(companyFacade.getAllCouponsByCategoryAndCompanyId(1));
         Print.sepereation();
 
         System.out.println("Get coupons by price lower then 25");
-        companyFacade.getAllCouponsWithPriceLowerThen(25).forEach(System.out::println);
+        Coupon.printCoupons(companyFacade.getAllCouponsWithPriceLowerThen(25));
         Print.sepereation();
 
     }

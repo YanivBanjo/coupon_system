@@ -78,4 +78,21 @@ public class Company {
     public static Company createCompany(String name) {
         return new Company(name, name + "@gmail.co.il", PasswordUtils.generate(10));
     }
+    public static void printCompanyHeader() {
+        System.out.println(String.format("%10s %10s %10s %10s %20s %15s %10s %10s %10s", "Id", "|", "Name", "|", "Email", "|", "Password", "|", "coupons"));
+        System.out.println(String.format("%s", "---------------------------------------------------------------------------------------------------------------------"));
+    }
+    public static void printCompanyDetails(Company c) {
+        System.out.println(String.format("%10s %10s %10s %10s %20s %15s %10s %10s %10s", c.getId(), "|", c.getName(), "|", c.getEmail(), "|", c.getPassword(), "|", c.getCoupons()));
+    }
+
+    public static void printCompany (Company company) {
+        printCompanyHeader();
+        printCompanyDetails(company);
+    }
+
+    public static void printCompanies (List<Company> companies) {
+        printCompanyHeader();
+        companies.forEach(company -> printCompanyDetails(company));
+    }
 }
