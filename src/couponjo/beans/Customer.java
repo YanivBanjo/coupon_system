@@ -1,7 +1,6 @@
 package couponjo.beans;
 
 import couponjo.utils.PasswordUtils;
-
 import java.util.List;
 
 public class Customer {
@@ -88,20 +87,22 @@ public class Customer {
     public static Customer createCustomer(String name, String family) {
         return new Customer(name, family, name + "." + family + "@gmail.com", PasswordUtils.generate(10));
     }
+
     public static void printCustomerHeader() {
         System.out.println(String.format("%5s %5s %10s %10s %10s %10s %22s %15s %10s %10s %10s", "Id", "|", "First Name", "|", "Last Name", "|", "Email", "|", "Password", "|", "Coupons"));
         System.out.println(String.format("%s", "----------------------------------------------------------------------------------------------------------------------------------------"));
     }
+
     public static void printCustomerDetails(Customer c) {
         System.out.println(String.format("%5s %5s %10s %10s %10s %10s %22s %15s %10s %10s %10s", c.getId(), "|", c.getFirstName(), "|", c.getLastName(), "|", c.getEmail(), "|", c.getPassword(), "|", c.getCoupons()));
     }
 
-    public static void printCustomer (Customer customer) {
+    public static void printCustomer(Customer customer) {
         printCustomerHeader();
         printCustomerDetails(customer);
     }
 
-    public static void printCustomers (List<Customer> customers) {
+    public static void printCustomers(List<Customer> customers) {
         printCustomerHeader();
         customers.forEach(customer -> printCustomerDetails(customer));
     }

@@ -1,6 +1,5 @@
 package couponjo.facade;
 
-import couponjo.beans.Category;
 import couponjo.beans.Company;
 import couponjo.beans.Coupon;
 import couponjo.beans.CustomerCouponPurchase;
@@ -19,8 +18,11 @@ public class CompanyFacade extends ClientFacade {
     @Override
     boolean login(String email, String password) throws SQLException {
         Company company = companyDAO.getCompanyByEmail(email);
-        this.companyId = company.getId();
-        return companyDAO.isCompanyExist(email, password);
+        if (company != null) {
+            this.companyId = company.getId();
+            return true;
+        }
+        return false;
     }
 
     public void addCoupon(Coupon coupon) throws SQLException, InvalidOperationException {

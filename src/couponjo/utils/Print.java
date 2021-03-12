@@ -1,12 +1,11 @@
 package couponjo.utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Print {
 
-    public static void sepereation() {
+    public static void separation() {
         System.out.println(ConsoleColors.CYAN_BOLD + "********************************************************************************" +
                 "**********************************************************************************************************************" + ConsoleColors.RESET);
     }

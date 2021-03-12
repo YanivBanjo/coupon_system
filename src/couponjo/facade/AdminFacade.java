@@ -52,9 +52,6 @@ public class AdminFacade extends ClientFacade {
         if (toCompare == null) {
             throw new InvalidOperationException("company doesn't exist");
         }
-        if (!toCompare.getName().equals(company.getName())) {
-            throw new InvalidOperationException("company name can't be update");
-        }
         company.setId(toCompare.getId());
         companyDAO.updateCompany(company);
     }
@@ -129,7 +126,7 @@ public class AdminFacade extends ClientFacade {
     }
 
     private List<CustomerCouponPurchase> getCouponPurchaseByCustomerId(int id) throws SQLException {
-        return couponDAO.getAllCouponPurcaseByCustomerId(id);
+        return couponDAO.getAllCouponPurchaseByCustomerId(id);
     }
 
     private void deletePurchases(List<CustomerCouponPurchase> purchaseList, String name) {

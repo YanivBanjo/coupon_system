@@ -25,11 +25,20 @@ public class TestAdminFacade {
         ASCIIArtGenerator.print("Admin Facade");
 
         LoginManager loginManager = LoginManager.getInstance();
+        try {
+            System.out.println("check admin invalid user");
+            System.out.println(loginManager.login("admini@admin.com", "admin", ClientType.ADMINISTRATOR));
+        } catch (LoginOperationException e) {
+            Print.exception(e.getMessage());
+        }
+
+        Print.separation();
+        System.out.println("login");
         System.out.println(loginManager.login("admin@admin.com", "admin", ClientType.ADMINISTRATOR));
 
         AdminFacade adminFacade = (AdminFacade) loginManager.login("admin@admin.com", "admin", ClientType.ADMINISTRATOR);
-        Print.sepereation();
-        //COMPANY
+        Print.separation();
+
         Company company1 = Company.createCompany("cocaCola");
         Company company2 = Company.createCompany("Spring");
         Company company3 = Company.createCompany("IKEA");
@@ -52,7 +61,7 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("update company " + company1.getName() + " password");
@@ -66,7 +75,7 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("update company " + company1.getName() + " name to Pepsi");
@@ -80,7 +89,7 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             company1.setName("cocaCola");
@@ -94,15 +103,15 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get all companies");
         Company.printCompanies(adminFacade.getAllCompanies());
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get single company");
         Company.printCompany(adminFacade.getSingleCompany(1));
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Going to delete company with no coupons");
         try {
@@ -110,7 +119,7 @@ public class TestAdminFacade {
         } catch (InvalidOperationException e) {
             Print.exception(e.getMessage());
         }
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Going to delete company with coupons and purchase");
         try {
@@ -136,9 +145,8 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
-        // CUSTOMER
         Customer customer1 = Customer.createCustomer("Yaniv", "Banjo");
         Customer customer2 = Customer.createCustomer("Shmuel", "Banjo");
         Customer customer3 = Customer.createCustomer("Avia", "Banjo");
@@ -156,7 +164,7 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("change customer code for  " + customer1.getFirstName());
@@ -166,18 +174,20 @@ public class TestAdminFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
-
+        Print.separation();
+        System.out.println("Get all customers");
+        Customer.printCustomers(adminFacade.getAllCustomers());
+        Print.separation();
         try {
-            System.out.println("Going to delete customer2 witout purchases");
+            System.out.println("Going to delete customer " + customer2.getFirstName() + " without purchases");
             adminFacade.deleteCustomer(customer2);
         } catch (InvalidOperationException e) {
             e.printStackTrace();
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
-            System.out.println("Going to delete customer3 with purchases");
+            System.out.println("Going to delete customer " + customer3.getFirstName() + " with purchases");
             CouponDAO couponDAO = new CouponDBDAO();
             Coupon coupon1 = Coupon.createCoupon(1);
             Coupon coupon2 = Coupon.createCoupon(1);
@@ -194,15 +204,15 @@ public class TestAdminFacade {
         } catch (InvalidOperationException e) {
             e.printStackTrace();
         }
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get all customers");
         Customer.printCustomers(adminFacade.getAllCustomers());
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get single customer");
         Customer.printCustomer(adminFacade.getSingleCustomer(1));
-        Print.sepereation();
+        Print.separation();
 
     }
 }

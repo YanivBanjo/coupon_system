@@ -1,12 +1,8 @@
 package couponjo;
 
 import couponjo.beans.*;
-import couponjo.dao.CouponDAO;
-import couponjo.db.DBInit;
-import couponjo.dbdao.CouponDBDAO;
 import couponjo.exceptions.InvalidOperationException;
 import couponjo.exceptions.LoginOperationException;
-import couponjo.facade.AdminFacade;
 import couponjo.facade.CompanyFacade;
 import couponjo.facade.LoginManager;
 import couponjo.utils.ASCIIArtGenerator;
@@ -17,17 +13,23 @@ import java.sql.SQLException;
 public class TestCompanyFacade {
     public static void run() throws SQLException, LoginOperationException {
         ASCIIArtGenerator.print("Company Facade");
-
         LoginManager loginManager = LoginManager.getInstance();
+        try {
+            System.out.println("check company invalid user");
+            System.out.println(loginManager.login("iBurger@gmail.co.il", "Aa123456", ClientType.COMPANY));
+        } catch (LoginOperationException e) {
+            Print.exception(e.getMessage());
+        }
+        Print.separation();
+        System.out.println("login");
         System.out.println(loginManager.login("Burger@gmail.co.il", "Aa123456", ClientType.COMPANY));
 
         CompanyFacade companyFacade = (CompanyFacade) loginManager.login("Burger@gmail.co.il", "Aa123456", ClientType.COMPANY);
-        Print.sepereation();
+        Print.separation();
 
-        //COMPANY
         System.out.println("Get Company coupons");
         Coupon.printCoupons(companyFacade.getAllCouponsByCompanyId());
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("add coupon with the same title");
@@ -40,7 +42,7 @@ public class TestCompanyFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("add coupon with the same title of other company");
@@ -57,7 +59,7 @@ public class TestCompanyFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("update coupon with different companyid");
@@ -69,7 +71,7 @@ public class TestCompanyFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
             System.out.println("update coupon with different id");
@@ -85,7 +87,7 @@ public class TestCompanyFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         try {
 
@@ -96,19 +98,19 @@ public class TestCompanyFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get Company coupons");
         Coupon.printCoupons(companyFacade.getAllCouponsByCompanyId());
-        Print.sepereation();
+        Print.separation();
 
-        System.out.println("Get coupons by category");
+        System.out.println("Get coupons by category "+Category.values()[1]);
         Coupon.printCoupons(companyFacade.getAllCouponsByCategoryAndCompanyId(1));
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get coupons by price lower then 25");
         Coupon.printCoupons(companyFacade.getAllCouponsWithPriceLowerThen(25));
-        Print.sepereation();
+        Print.separation();
 
     }
 }

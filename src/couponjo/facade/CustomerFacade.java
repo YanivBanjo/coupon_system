@@ -5,7 +5,6 @@ import couponjo.beans.Coupon;
 import couponjo.beans.Customer;
 import couponjo.beans.CustomerCouponPurchase;
 import couponjo.exceptions.CouponOperationException;
-import couponjo.exceptions.InvalidOperationException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,12 +20,15 @@ public class CustomerFacade extends ClientFacade {
     @Override
     boolean login(String email, String password) throws SQLException {
         Customer customer = customerDAO.getCustomerByEmail(email);
-        customerId = customer.getId();
-        return customerDAO.isCustomerExist(email, password);
+        if (customer != null) {
+            this.customerId = customer.getId();
+            return true;
+        }
+        return false;
     }
 
     public void purchaseCoupon(int couponId) throws SQLException, CouponOperationException {
-        List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurcaseByCustomerId(customerId);
+        List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurchaseByCustomerId(customerId);
         for (CustomerCouponPurchase p : customerCouponPurchaseList) {
             if (couponId == p.getCouponId()) {
                 throw new CouponOperationException("Coupon was previously purchase");
@@ -54,7 +56,7 @@ public class CustomerFacade extends ClientFacade {
     }
 
     public List<Coupon> getAllCouponsPurchaseByCustomer() throws SQLException {
-        List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurcaseByCustomerId(customerId);
+        List<CustomerCouponPurchase> customerCouponPurchaseList = couponDAO.getAllCouponPurchaseByCustomerId(customerId);
         List<Coupon> couponList = new ArrayList<>();
         for (CustomerCouponPurchase p : customerCouponPurchaseList) {
             couponList.add(couponDAO.getSingleCoupon(p.getCouponId()));

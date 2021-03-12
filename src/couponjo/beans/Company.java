@@ -1,7 +1,6 @@
 package couponjo.beans;
 
 import couponjo.utils.PasswordUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +90,7 @@ public class Company {
         printCompanyDetails(company);
     }
 
-    public static void printCompanies (List<Company> companies) {
+    public static void printCompanies(List<Company> companies) {
         printCompanyHeader();
         companies.forEach(company -> printCompanyDetails(company));
     }

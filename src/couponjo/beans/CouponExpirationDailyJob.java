@@ -8,14 +8,15 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-public class CouponExperationDailyJob implements Runnable {
+public class CouponExpirationDailyJob implements Runnable {
     private boolean quit;
     private CouponDAO couponDAO = new CouponDBDAO();
+    long millis=System.currentTimeMillis();
+    java.sql.Date date=new java.sql.Date(millis);
 
-    public CouponExperationDailyJob() {
+    public CouponExpirationDailyJob() {
 
     }
-
 
     @Override
     public void run() {
@@ -23,7 +24,7 @@ public class CouponExperationDailyJob implements Runnable {
             try {
                 Print.thread("DAILY JOB RUN, verify old coupons not in the system");
                 Thread.sleep(5000);
-                List<Coupon> couponList = couponDAO.getAllCoupons();
+                List<Coupon> couponList = couponDAO.getOldCoupons(date);
                 if (couponList != null) {
                     for (Coupon c : couponList) {
                         if (c.getEnd_date().getTime() - new Date().getTime() < 0) {
@@ -45,7 +46,8 @@ public class CouponExperationDailyJob implements Runnable {
             }
         }
     }
-    public void stop(boolean quit){
+
+    public void stop(boolean quit) {
         Print.thread("DAILY JOB STOPPED");
         this.quit = quit;
     }

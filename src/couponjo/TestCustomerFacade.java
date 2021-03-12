@@ -7,9 +7,7 @@ import couponjo.beans.Customer;
 import couponjo.dao.CouponDAO;
 import couponjo.dbdao.CouponDBDAO;
 import couponjo.exceptions.CouponOperationException;
-import couponjo.exceptions.InvalidOperationException;
 import couponjo.exceptions.LoginOperationException;
-import couponjo.facade.CompanyFacade;
 import couponjo.facade.CustomerFacade;
 import couponjo.facade.LoginManager;
 import couponjo.utils.ASCIIArtGenerator;
@@ -23,12 +21,19 @@ public class TestCustomerFacade {
         ASCIIArtGenerator.print("Customer Facade");
 
         LoginManager loginManager = LoginManager.getInstance();
+        try {
+            System.out.println("check customer invalid user");
+            System.out.println(loginManager.login("Yanivi.Banjo@gmail.com", "Aa123456", ClientType.CUSTOMER));
+        } catch (LoginOperationException e) {
+            Print.exception(e.getMessage());
+        }
+        Print.separation();
+        System.out.println("login");
         System.out.println(loginManager.login("Yaniv.Banjo@gmail.com", "Aa123456", ClientType.CUSTOMER));
 
         CustomerFacade customerFacade = (CustomerFacade) loginManager.login("Yaniv.Banjo@gmail.com", "Aa123456", ClientType.CUSTOMER);
-        Print.sepereation();
+        Print.separation();
 
-        //CUSTOMER
         System.out.println("purchase coupon by customer for the first time");
         try {
             System.out.println("Print coupon details verify amount will be changed after the purchase");
@@ -39,7 +44,7 @@ public class TestCustomerFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("purchase coupon by customer for the second time");
         try {
@@ -48,7 +53,7 @@ public class TestCustomerFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("purchase coupon no amount ");
         Coupon coupon = Coupon.createCoupon(4);
@@ -62,7 +67,7 @@ public class TestCustomerFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
 
         System.out.println("purchase old coupon ");
@@ -77,29 +82,27 @@ public class TestCustomerFacade {
             Print.exception(e.getMessage());
 
         }
-        Print.sepereation();
+        Print.separation();
 
-        System.out.println("Get all Coupons purchse by customer login");
+        System.out.println("Get all Coupons purchase by customer login");
         Coupon.printCoupons(customerFacade.getAllCouponsPurchaseByCustomer());
-        Print.sepereation();
+        Print.separation();
 
-        System.out.println("Get all Coupons purchse by customer with category Food");
+        System.out.println("Get all Coupons purchase by customer with category Food");
         Coupon.printCoupons(customerFacade.getAllCouponsPurchaseByCategory(Category.FOOD));
-        Print.sepereation();
+        Print.separation();
 
-        System.out.println("Get all Coupons purchse by customer with category Electricity");
+        System.out.println("Get all Coupons purchase by customer with category Electricity");
         Coupon.printCoupons(customerFacade.getAllCouponsPurchaseByCategory(Category.ELECTRICITY));
-        Print.sepereation();
+        Print.separation();
 
-        System.out.println("Get all Coupons purchse by customer with lower price then 20");
+        System.out.println("Get all Coupons purchase by customer with lower price then 20");
         Coupon.printCoupons(customerFacade.getAllCouponsPurchaseByPriceLowerThen(20));
-        Print.sepereation();
+        Print.separation();
 
         System.out.println("Get Customer Details");
         Customer.printCustomer(customerFacade.getCustomerDetails());
-        Print.sepereation();
-
-
+        Print.separation();
 
     }
 }

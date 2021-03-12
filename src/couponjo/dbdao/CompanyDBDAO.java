@@ -2,15 +2,14 @@ package couponjo.dbdao;
 
 import couponjo.beans.Company;
 import couponjo.dao.CompanyDAO;
-import couponjo.db.ConnectionPool;
-import couponjo.utils.Print;
+import couponjo.utils.DBUtils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CompanyDBDAO implements CompanyDAO {
     private static final String ADD_COMPANY = "INSERT INTO `couponjo`.`companies` (`name`, `email`, `password`) VALUES (?, ?, ?)";
@@ -22,193 +21,98 @@ public class CompanyDBDAO implements CompanyDAO {
     private static final String GET_COMPANY_BY_NAME = "SELECT * FROM `couponjo`.`companies` WHERE (`name` = ?)";
     private static final String GET_COMPANY_BY_EMAIL = "SELECT * FROM `couponjo`.`companies` WHERE (`email` = ?)";
 
-    private static Connection connection;
-
     @Override
     public boolean isCompanyExist(String email, String password) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, email);
+        map.put(2, password);
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(IS_COMPANY_EXIST);
-            statement.setString(1, email);
-            statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            }
-
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
+        ResultSet resultSet = DBUtils.runQueryWithResult(IS_COMPANY_EXIST, map);
+        if (resultSet.next()) {
+            return true;
         }
         return false;
     }
 
     @Override
     public void addCompany(Company company) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(ADD_COMPANY);
-            statement.setString(1, company.getName());
-            statement.setString(2, company.getEmail());
-            statement.setString(3, company.getPassword());
-            statement.execute();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, company.getName());
+        map.put(2, company.getEmail());
+        map.put(3, company.getPassword());
 
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
-        }
+        DBUtils.runQuery(ADD_COMPANY, map);
     }
 
     @Override
     public void updateCompany(Company company) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, company.getName());
+        map.put(2, company.getEmail());
+        map.put(3, company.getPassword());
+        map.put(4, company.getId());
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(UPDATE_COMPANY);
-            statement.setString(1, company.getName());
-            statement.setString(2, company.getEmail());
-            statement.setString(3, company.getPassword());
-            statement.setInt(4, company.getId());
-            statement.execute();
-
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
-        }
+        DBUtils.runQuery(UPDATE_COMPANY, map);
     }
 
     @Override
     public void deleteCompany(Company company) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, company.getId());
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(DELETE_COMPANY);
-            statement.setInt(1, company.getId());
-            statement.execute();
-
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
-        }
+        DBUtils.runQuery(DELETE_COMPANY, map);
     }
 
     @Override
     public Company getSingleCompany(int id) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, id);
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(GET_ONE_COMPANY);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
+        ResultSet resultSet = DBUtils.runQueryWithResult(GET_ONE_COMPANY, map);
+        if (resultSet.next()) {
             return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
                     resultSet.getString(4));
-
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
         }
         return null;
     }
 
     @Override
     public Company getCompanyByName(String name) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, name);
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(GET_COMPANY_BY_NAME);
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4));
-            }
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
+        ResultSet resultSet = DBUtils.runQueryWithResult(GET_COMPANY_BY_NAME, map);
+        if (resultSet.next()) {
+            return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                    resultSet.getString(4));
         }
         return null;
     }
 
     @Override
     public Company getCompanyByEmail(String email) throws SQLException {
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, email);
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(GET_COMPANY_BY_EMAIL);
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4));
-            }
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
+        ResultSet resultSet = DBUtils.runQueryWithResult(GET_COMPANY_BY_EMAIL, map);
+        if (resultSet.next()) {
+            return new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                    resultSet.getString(4));
         }
         return null;
     }
 
     @Override
     public List<Company> getAllCompanies() throws SQLException {
+        Map<Integer, Object> map = new HashMap<>();
         List<Company> companies = new ArrayList<>();
-        try {
-            // STEP 2 - open connection to DB
-            connection = ConnectionPool.getInstance().getConnection();
+        ResultSet resultSet = DBUtils.runQueryWithResult(GET_ALL_COMPANIES, map);
 
-            // STEP 3 - Run SQL Statement
-            PreparedStatement statement = connection.prepareStatement(GET_ALL_COMPANIES);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                companies.add(new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                        resultSet.getString(4)));
-            }
-            return companies;
-
-        } catch (Exception e) {
-            Print.exception(e.getMessage());
-
-        } finally {
-            // STEP 5 - close connection
-            ConnectionPool.getInstance().returnConnection(connection);
+        while (resultSet.next()) {
+            companies.add(new Company(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                    resultSet.getString(4)));
         }
-        return null;
+        return companies;
     }
 }

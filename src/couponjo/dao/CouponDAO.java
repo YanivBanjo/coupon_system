@@ -3,6 +3,7 @@ package couponjo.dao;
 import couponjo.beans.Coupon;
 import couponjo.beans.CustomerCouponPurchase;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface CouponDAO {
 
     List<Coupon> getAllCoupons() throws SQLException;
 
+    List<Coupon> getOldCoupons(Date date) throws SQLException;
+
     List<Coupon> getAllCouponsByCompanyId(int id) throws SQLException;
 
     List<Coupon> getAllCouponsWithPriceLowerThen(int companyId, int price) throws SQLException;
@@ -29,7 +32,7 @@ public interface CouponDAO {
 
     void deleteCouponPurchase(int customerId, int couponId) throws SQLException;
 
-    List<CustomerCouponPurchase> getAllCouponPurcaseByCustomerId(int customerId) throws SQLException;
+    List<CustomerCouponPurchase> getAllCouponPurchaseByCustomerId(int customerId) throws SQLException;
 
     List<CustomerCouponPurchase> getAllCouponPurchaseByCouponId(int customerId) throws SQLException;
 }

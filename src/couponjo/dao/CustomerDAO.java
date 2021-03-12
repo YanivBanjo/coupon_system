@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CustomerDAO {
-    boolean isCustomerExist(String email ,String password) throws SQLException;
+    boolean isCustomerExist(String email, String password) throws SQLException;
 
     void addCustomer(Customer customer) throws SQLException;
 

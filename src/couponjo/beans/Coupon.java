@@ -1,8 +1,6 @@
 package couponjo.beans;
 
 import couponjo.utils.Print;
-
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -135,27 +133,26 @@ public class Coupon {
 
     public static Coupon createCoupon(int companyid) {
         return new Coupon(companyid, Category.ELECTRICITY, "TestTitle" + (int) (Math.random() * 40 + 1), "testDescription", java.sql.Date.valueOf(LocalDate.now().plusDays(2)),
-                java.sql.Date.valueOf(LocalDate.now().plusDays(2)), (int) (Math.random() * 40 + 1),Math.floor((Math.random() * 40 + 1) *100)/100, "none");
+                java.sql.Date.valueOf(LocalDate.now().plusDays(2)), (int) (Math.random() * 40 + 1), Math.floor((Math.random() * 40 + 1) * 100) / 100, "none");
     }
 
     public static void printCouponHeader() {
-//        Coupon{id=1, companyId=3, category=ELECTRICITY, title='TestTitle11', description='testDescription', start_date=08-03-2021, end_date=08-03-2021, amount=40, price=39.11, image='none'}
-
         System.out.println(String.format("%5s %5s %12s %2s %12s %9s %10s %16s %16s %10s %10s %10s %10s %10s %5s %5s %5s %5s %5s",
                 "Id", "|", "Company Id", "|", "Category", "|", "Title", "|", "Description", "|", "Start Date", "|", "End Date", "|", "Amount", "|", "Price", "|", "Image"));
         System.out.println(String.format("%s", "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"));
     }
+
     public static void printCouponDetails(Coupon c) {
         System.out.println(String.format("%5s %5s %7s %7s %10s %10s %10s %15s %16s %10s %10s %10s %5s %10s %5s %5s %5s %5s %5s", c.getId(), "|", c.getCompanyId(), "|", c.getCategory(), "|", c.getTitle(), "|",
                 c.getDescription(), "|", c.getStart_date(), "|", c.getEnd_date(), "|", c.getAmount(), "|", c.getPrice(), "|", c.getImage()));
     }
 
-    public static void printCoupon (Coupon coupon) {
+    public static void printCoupon(Coupon coupon) {
         printCouponHeader();
         printCouponDetails(coupon);
     }
 
-    public static void printCoupons (List<Coupon> coupons) {
+    public static void printCoupons(List<Coupon> coupons) {
         printCouponHeader();
         coupons.forEach(coupon -> printCouponDetails(coupon));
     }

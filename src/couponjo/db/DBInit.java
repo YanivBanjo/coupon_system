@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.util.Map;
 
 public class DBInit {
-    //read from json file
-    //image should be BLOB
 
     private static String[] companies = {"Coca_Cola", "Tnuva", "Strauss", "IEC", "IKEA", "KFC", "BanjoPizza", "BanjoBurger", "BanjoTours"};
     private static int[] categoryId = {1, 1, 1, 2, 2, 3, 3, 3, 4};
