@@ -22,7 +22,7 @@ public class CustomerFacade extends ClientFacade {
         Customer customer = customerDAO.getCustomerByEmail(email);
         if (customer != null) {
             this.customerId = customer.getId();
-            return true;
+            return customerDAO.isCustomerExist(email,password);
         }
         return false;
     }

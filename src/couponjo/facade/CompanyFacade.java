@@ -20,7 +20,7 @@ public class CompanyFacade extends ClientFacade {
         Company company = companyDAO.getCompanyByEmail(email);
         if (company != null) {
             this.companyId = company.getId();
-            return true;
+            return companyDAO.isCompanyExist(email,password);
         }
         return false;
     }
